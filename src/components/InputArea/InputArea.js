@@ -9,11 +9,11 @@ const InputArea = (props) => {
   return (
     <div styleName="bottom">
       <div styleName="input-holder">
-        <span styleName="main-input" placeholder="Type your message..." contentEditable="true"></span>
+        <span id="message-box" styleName="main-input" placeholder="Type your message..." contentEditable="true"></span>
       </div>
       <button styleName="send-select">
         <span styleName="glyph-position">
-          <Glyphicon glyph="send" />
+          <Glyphicon glyph="send" onClick={() => props.sendMessage(document.getElementById('message-box').innerHTML) } />
         </span>
       </button>
     </div>
