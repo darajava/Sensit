@@ -1,0 +1,20 @@
+.sens {
+  color: #42BDC3;
+  text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+}
+
+.it {
+  color: white;
+  text-shadow: -1px 0 #42BDC3, 0 1px #42BDC3, 1px 0 #42BDC3, 0 -1px #42BDC3;
+}
+
+.logo {
+  font-size: 32px;
+  position: absolute;
+  left: calc(50% - 47px);
+  top: calc(50% + 60px);
+  transform: translate(-100px, -100px) scale(1) translate(100px, 100px);
+  width: 0;
+}
+
+.center {}

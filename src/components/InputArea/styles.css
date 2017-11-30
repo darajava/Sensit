@@ -1,0 +1,63 @@
+.bottom {
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+  padding: 10px;
+}
+
+.input-holder {
+  max-width: calc(100% - 55px);
+  width: calc(100% - 55px);
+  border: 1px solid #ddd;
+  border-radius: 33px;
+  box-shadow: 1px 1px 2px 0px rgba(166,166,166,0.4);
+  display: inline-block;
+  max-height: 200px;
+  overflow-y: auto;
+  line-height: 29px;
+}
+
+.main-input {
+  width: 100%;
+  height: 43px;
+  padding: 7px;
+  padding-left: 15px;
+  padding-right: 15px;
+  outline: 0;
+  font-weight: bold;
+  font-size: 16px;
+  display: inline-block;
+  line-height: 29px;
+  color: #333;
+}
+
+.send-select {
+  width: 43px;
+  height: 43px;
+  margin: 0;
+  border-radius: 50%;
+  background-color: #42BDC3;
+  display: inline-block;
+  float: right;
+  border: 0;
+  color: white;
+  outline: 0;
+  box-shadow: 1px 1px 2px 0px rgba(166,166,166,0.4);
+}
+
+[placeholder]:empty:before {
+    content: "Type your message";
+    color: #bbb;
+    font-weight: normal;
+}
+
+[placeholder]:empty:focus:before {
+    content: "";
+}
+
+.glyph-position {
+  position: relative;
+  left: -2px;
+  top: 2px;
+  font-size: 18px;
+}
