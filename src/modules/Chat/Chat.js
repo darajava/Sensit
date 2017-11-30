@@ -5,6 +5,8 @@ import InputArea from '../../components/InputArea/InputArea';
 import MessageList from '../../components/MessageList/MessageList';
 import { ConnectedRouter } from 'react-router-redux';
 import createHistory from 'history/createBrowserHistory';
+import CSSModules from 'react-css-modules';
+import styles from './styles.css';
 
 const history = createHistory();
 
@@ -63,14 +65,14 @@ class Chat extends Component {
     };
   }
 
-    render() {
-      return (
-        <div>
-          <MessageList messages={this.state.messages}/>
-          <InputArea sendMessage={(msg) => this.sendMessage(msg)} />
-        </div>
-      );
-    }
+  render() {
+    return (
+      <div styleName="background">
+        <MessageList messages={this.state.messages}/>
+        <InputArea sendMessage={(msg) => this.sendMessage(msg)} />
+      </div>
+    );
+  }
 }
 
 function mapStateToProps(state) {
@@ -79,4 +81,6 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps, null)(Chat);
+export default CSSModules(Chat, styles);
+
+// export default connect(mapStateToProps, null)(Chat);

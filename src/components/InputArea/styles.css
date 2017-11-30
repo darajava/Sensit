@@ -9,6 +9,7 @@
   max-width: calc(100% - 55px);
   width: calc(100% - 55px);
   border: 1px solid #ddd;
+  background-color: white;
   border-radius: 33px;
   box-shadow: 1px 1px 2px 0px rgba(166,166,166,0.4);
   display: inline-block;
