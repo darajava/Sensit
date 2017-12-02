@@ -3,6 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PrivateRoute from '../../components/PrivateRoute';
 import Login from '../Login/Login';
+import Register from '../Register/Register';
 import Chat from '../Chat/Chat';
 import { ConnectedRouter } from 'react-router-redux';
 import createHistory from 'history/createBrowserHistory';
@@ -36,8 +37,9 @@ class MainLayout extends Component {
                   </Switch>
                 </nav>
                 <Switch>
-                  <Route path='/' component={Chat}/>
-                  <Route path='/' component={Chat}/>
+                  <Route path='/login' component={Login} />
+                  <Route path='/register' component={Register} />
+                  <PrivateRoute path='/' component={Chat} />
                 </Switch>
               </main>
             </div>

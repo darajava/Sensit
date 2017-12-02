@@ -5,14 +5,21 @@ import PrivateRoute from '../../components/PrivateRoute';
 import { ConnectedRouter } from 'react-router-redux';
 import createHistory from 'history/createBrowserHistory';
 
+import LoginView from '../../components/Login/Login';
+
+
 const history = createHistory();
 
 class Login extends Component {
 
+    loginUser() {
+
+    }
+
     render() {
       return (
         <div>
-          Login here
+          <LoginView />
         </div>
       );
     }
