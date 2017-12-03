@@ -7,10 +7,17 @@ import createHistory from 'history/createBrowserHistory';
 
 import LoginView from '../../components/Login/Login';
 
+import { withRouter } from 'react-router-dom'
 
 const history = createHistory();
 
 class Login extends Component {
+
+    constructor() {
+      super();
+
+      this.loginUser = this.loginUser.bind(this);
+    }
 
     loginUser(username, password) {
       fetch("http://localhost:1337/login", {
@@ -29,9 +36,16 @@ class Login extends Component {
          return response.json();
       }).then((json) => {
         console.log(json.token);
+        console.log(json);
 
-        // If we have this, then we should be logged in
-        localStorage.setItem('token', json.token);
+        if (json.success) {
+          // If we have this, then we should be logged in
+          localStorage.setItem('token', json.token);
+
+          this.props.history.push('/home');
+        } else {
+          alert('Invalid Login')
+        }
       });
     }
 

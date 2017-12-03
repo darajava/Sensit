@@ -8,11 +8,9 @@ import { routerMiddleware } from 'react-router-redux';
 import { persistStore, autoRehydrate } from 'redux-persist-immutable'
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const sagaMiddleware = createSagaMiddleware();
 export const history = createHistory();
 
 const middlewares = [
-  sagaMiddleware,
   thunk,
   routerMiddleware(history),
 ];
@@ -23,7 +21,5 @@ const enhancers = composeEnhancers(
 );
 
 const store = createStore(createReducer(), undefined, enhancers);
-
-persistStore(store, {blacklist: ['signupState', 'accountQuestionsState']})
 
 export default store;
