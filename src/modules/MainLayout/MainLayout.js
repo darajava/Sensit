@@ -5,6 +5,7 @@ import PrivateRoute from '../../components/PrivateRoute';
 import Login from '../Login/Login';
 import Register from '../Register/Register';
 import Chat from '../Chat/Chat';
+import Home from '../Home/Home';
 import { ConnectedRouter } from 'react-router-redux';
 import createHistory from 'history/createBrowserHistory';
 
@@ -39,7 +40,7 @@ class MainLayout extends Component {
                 <Switch>
                   <Route path='/login' component={Login} />
                   <Route path='/register' component={Register} />
-                  <PrivateRoute path='/' component={Chat} />
+                  <PrivateRoute path='/home' component={Home} isAuthenticated={localStorage.getItem('token')} />
                 </Switch>
               </main>
             </div>

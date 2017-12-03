@@ -12,14 +12,33 @@ const history = createHistory();
 
 class Login extends Component {
 
-    loginUser() {
+    loginUser(username, password) {
+      fetch("http://localhost:1337/login", {
+        method: "POST",
 
+        headers: {
+          "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+          username,
+          password,
+        }),
+      })
+      .then( (response) => { 
+         return response.json();
+      }).then((json) => {
+        console.log(json.token);
+
+        // If we have this, then we should be logged in
+        localStorage.setItem('token', json.token);
+      });
     }
 
     render() {
       return (
         <div>
-          <LoginView />
+          <LoginView loginUser={this.loginUser} />
         </div>
       );
     }
