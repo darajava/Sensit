@@ -28,7 +28,7 @@ class Home extends Component {
   getRecentChats() {
     this.setState({chatsLoaded: false});
 
-    fetch("http://darajava.ie:1337/chats", {
+    fetch("http://" + process.env.REACT_APP_BASE_URL + ":" + process.env.REACT_APP_API_PORT + "/chats", {
       method: "POST",
 
       headers: {

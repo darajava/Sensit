@@ -20,7 +20,7 @@ class Login extends Component {
     }
 
     loginUser(username, password) {
-      fetch("http://darajava.ie:1337/login", {
+      fetch("http://" + process.env.REACT_APP_BASE_URL + ":" + process.env.REACT_APP_API_PORT + "/login", {
         method: "POST",
 
         headers: {

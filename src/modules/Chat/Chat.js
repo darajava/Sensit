@@ -40,7 +40,7 @@ class Chat extends Component {
     let users = encodeURIComponent(JSON.stringify(props.location.query.users));
 
     connection = new WebSocket(
-      'ws://darajava.ie:1338?room=' + props.match.params.id +
+      'ws://' + process.env.REACT_APP_BASE_URL + ':' + process.env.REACT_APP_API_PORT + '?room=' + props.match.params.id +
       '&users=' + users +
       '&myId=' + myId
     );

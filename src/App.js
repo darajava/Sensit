@@ -16,6 +16,17 @@ class App extends Component {
   constructor() {
     super()
     this.state = { rehydrated: false }
+
+    console.log(process.env);
+    console.log(process.env);
+    console.log(process.env);
+    console.log(process.env);
+    console.log(process.env);
+    console.log(process.env);
+    console.log(process.env);
+    console.log(process.env);
+    console.log(process.env);
+    console.log(process.env);
   }
 
   componentWillMount(){
