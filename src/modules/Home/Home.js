@@ -28,7 +28,7 @@ class Home extends Component {
   getRecentChats() {
     this.setState({chatsLoaded: false});
 
-    fetch("http://localhost:1337/chats", {
+    fetch("http://darajava.ie:1337/chats", {
       method: "POST",
 
       headers: {

@@ -20,7 +20,7 @@ class Login extends Component {
     }
 
     loginUser(username, password) {
-      fetch("http://localhost:1337/login", {
+      fetch("http://darajava.ie:1337/login", {
         method: "POST",
 
         headers: {

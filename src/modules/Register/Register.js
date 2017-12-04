@@ -11,7 +11,7 @@ import RegisterView from '../../components/Login/Register';
 class Register extends Component {
 
     registerUser(username, password) {
-      fetch("http://localhost:1337/register", {
+      fetch("http://darajava.ie:1337/register", {
         method: "POST",
 
         headers: {
