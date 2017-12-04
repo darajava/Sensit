@@ -9,9 +9,7 @@ import CSSModules from 'react-css-modules';
 import styles from './styles.css';
 
 const history = createHistory();
-
-const connection = new WebSocket('ws://127.0.0.1:1338');
-
+let connection;
 
 class Chat extends Component {
 
@@ -25,17 +23,27 @@ class Chat extends Component {
         text: message,
       }
 
-      console.log(JSON.stringify(jsonMessage));
-
       connection.send(JSON.stringify(jsonMessage));
   }
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       messages: [],
     };
+
+    console.log(props);
+
+    let myId = localStorage.getItem('id');
+
+    let users = encodeURIComponent(JSON.stringify(props.location.query.users));
+
+    connection = new WebSocket(
+      'ws://127.0.0.1:1338?room=' + props.match.params.id +
+      '&users=' + users +
+      '&myId=' + myId
+    );
 
     // if user is running mozilla then use its built-in WebSocket
     window.WebSocket = window.WebSocket || window.MozWebSocket;

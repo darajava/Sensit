@@ -41,7 +41,7 @@ class MainLayout extends Component {
                   <Route path='/login' component={Login} />
                   <Route path='/register' component={Register} />
                   <PrivateRoute path='/home' component={Home} isAuthenticated={localStorage.getItem('token')} />
-                  <PrivateRoute path='/chat' component={Chat} isAuthenticated={localStorage.getItem('token')} />
+                  <PrivateRoute path='/chat/:id' component={Chat} isAuthenticated={localStorage.getItem('token')} />
                 </Switch>
               </main>
             </div>

@@ -35,12 +35,13 @@ class Login extends Component {
       .then( (response) => { 
          return response.json();
       }).then((json) => {
-        console.log(json.token);
-        console.log(json);
 
         if (json.success) {
           // If we have this, then we should be logged in
           localStorage.setItem('token', json.token);
+          // Save logged in user's ID
+          console.log(json.id);
+          localStorage.setItem('id', json.id);
 
           this.props.history.push('/home');
         } else {
