@@ -1,0 +1,49 @@
+.message-holder {
+  width: 100%;
+  display: inline-block;
+}
+
+.message {
+  box-shadow: 1px 1px 2px 0px rgba(166,166,166,0.4);
+  padding: 5px 10px;
+  display: inline-block;
+  display: block;
+  border-radius: 5px;
+  max-width: 70%;
+  margin: 10px;
+  width: auto;
+  float: left;
+  word-break: break-word;
+}
+
+.my-message {
+  composes: message;
+
+  float: right;
+  background-color: #42BDC3;
+  color: white;
+}
+
+.your-message {
+  composes: message;
+
+  background-color: white;
+}
+
+.time {
+  text-align: right;
+  width: 100%;
+  font-size: 11px;
+  font-weight: normal;
+  color: #aaa;
+  display: inline-block;
+}
+
+.my-message .time {
+  text-align: right;
+  width: 100%;
+  font-size: 11px;
+  font-weight: normal;
+  display: inline-block;
+  color: #fff;
+}
