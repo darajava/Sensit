@@ -11,7 +11,7 @@ import RegisterView from '../../components/Login/Register';
 class Register extends Component {
 
     registerUser(username, password) {
-      fetch("http://" + process.env.REACT_APP_BASE_URL + ":" + process.env.REACT_APP_API_PORT + "/register", {
+      fetch("http://" + process.env.REACT_APP_API_URL + "/register", {
         method: "POST",
 
         headers: {

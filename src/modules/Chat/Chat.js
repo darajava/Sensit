@@ -23,7 +23,41 @@ class Chat extends Component {
         text: message,
       }
 
+      console.log('sending')
+
       connection.send(JSON.stringify(jsonMessage));
+  }
+
+  getMessages(room) {
+    fetch("http://" + process.env.REACT_APP_API_URL + "/messages", {
+      method: "POST",
+
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + localStorage.getItem('token'),
+      },
+
+      body: JSON.stringify({
+        room: room,
+        page: 1, // TODO: Gets all messages for now  
+      }),
+    })
+    .then( (response) => { 
+       return response.json();
+    }).then((json) => {
+      let messages = [];
+      for (let key in json) {
+        if (json.hasOwnProperty(key)) {
+          messages.push(json[key]);
+        }
+      }
+
+      console.log(messages);
+
+      this.setState({messages, loadingMessages: false});
+      // // If we have this, then we should be logged in
+      // localStorage.setItem('token', json.token);
+    });
   }
 
   constructor(props) {
@@ -31,6 +65,7 @@ class Chat extends Component {
 
     this.state = {
       messages: [],
+      loadingMessages: true,
     };
 
     console.log(props);
@@ -39,8 +74,10 @@ class Chat extends Component {
 
     let users = encodeURIComponent(JSON.stringify(props.location.query.users));
 
+    this.getMessages(props.match.params.id);
+
     connection = new WebSocket(
-      'ws://' + process.env.REACT_APP_BASE_URL + ':' + process.env.REACT_APP_API_PORT + '?room=' + props.match.params.id +
+      'ws://' + process.env.REACT_APP_CHAT_URL + '?room=' + props.match.params.id +
       '&users=' + users +
       '&myId=' + myId
     );
@@ -57,12 +94,14 @@ class Chat extends Component {
     connection.onerror = (error) => {
       // an error occurred when sending/receiving data
       // alert('error');
+      console.log(error)
     };
 
     connection.onmessage = (message) => {
       // try to decode json (I assume that each message
       // from server is json)
       let json = '';
+      console.log('message');
       console.log(message);
       try {
         json = JSON.parse(message.data);
@@ -72,9 +111,26 @@ class Chat extends Component {
         return;
       }
 
+      // If the incoming message isn't ours, then mark it as delivered to them
+      if (json.data.sentBy !== localStorage.getItem('id')) {
+        fetch("http://" + process.env.REACT_APP_API_URL + "/message-delivered", {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + localStorage.getItem('token'),
+          },
+
+          body: JSON.stringify({
+            message: json.data,
+            userId: localStorage.getItem('id'), // TODO: get this from JWT on the server  
+          }),
+        });
+      }
+
       if (json.data.text) {
         this.setState({
-          messages: this.state.messages.concat([json])
+          messages: this.state.messages.concat([json.data])
         });
       }
     };
@@ -83,7 +139,7 @@ class Chat extends Component {
   render() {
     return (
       <div styleName="background">
-        <MessageList messages={this.state.messages}/>
+        <MessageList messages={this.state.messages} loading={this.state.loadingMessages}/>
         <InputArea sendMessage={(msg) => this.sendMessage(msg)} />
       </div>
     );

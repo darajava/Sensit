@@ -20,7 +20,7 @@ class Login extends Component {
     }
 
     loginUser(username, password) {
-      fetch("http://" + process.env.REACT_APP_BASE_URL + ":" + process.env.REACT_APP_API_PORT + "/login", {
+      fetch("http://" + process.env.REACT_APP_API_URL + "/login", {
         method: "POST",
 
         headers: {

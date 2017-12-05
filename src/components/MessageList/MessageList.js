@@ -11,7 +11,7 @@ const MessageList = (props) => {
 
   for (let i = 0; i <= props.messages.length; i++) {
     if (props.messages[i]) {
-      messageList.push(<Message message={props.messages[i].data} mine={props.messages[i].data.userId === localStorage.getItem('id')} />);
+      messageList.push(<Message message={props.messages[i]} mine={props.messages[i].sentBy === localStorage.getItem('id')} />);
     }
   }
 
