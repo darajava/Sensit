@@ -25,7 +25,7 @@ class Chat extends Component {
 
       console.log('sending')
 
-      connection.send(JSON.stringify(jsonMessage));
+      connection.send(JSON.stringify({ type: 'message', data: jsonMessage }));
   }
 
   getMessages(room) {
@@ -100,38 +100,67 @@ class Chat extends Component {
     connection.onmessage = (message) => {
       // try to decode json (I assume that each message
       // from server is json)
-      let json = '';
+      let parsedMessage = '';
       console.log('message');
       console.log(message);
       try {
-        json = JSON.parse(message.data);
+        parsedMessage = JSON.parse(message.data);
       } catch (e) {
         console.log('This doesn\'t look like valid JSON: ',
             message.data);
         return;
       }
 
-      // If the incoming message isn't ours, then mark it as delivered to them
-      if (json.data.sentBy !== localStorage.getItem('id')) {
-        fetch("http://" + process.env.REACT_APP_API_URL + "/message-delivered", {
-          method: "POST",
+      switch (parsedMessage.type) {
+        case 'deliver-reciept':
+          console.log('got delivery reciept');
+          for (let i = 0; i < this.state.messages.length; i++) {
+            if (parsedMessage.data.messageId === this.state.messages[i]._id) {
+              let updatedMessages = this.state.messages;
+              console.log(this.state.messages);
+              updatedMessages[i].deliveredTo.push(parsedMessage.data.deliveredTo);
+              this.setState({messages: updatedMessages});
+            }
+          }
 
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer " + localStorage.getItem('token'),
-          },
+          break;
+        case 'message':
+          // If the incoming message isn't ours, then mark it as delivered to the server
+          if (parsedMessage.data.sentBy !== localStorage.getItem('id')) {
+            fetch("http://" + process.env.REACT_APP_API_URL + "/message-delivered", {
+              method: "POST",
 
-          body: JSON.stringify({
-            message: json.data,
-            userId: localStorage.getItem('id'), // TODO: get this from JWT on the server  
-          }),
-        });
-      }
+              headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + localStorage.getItem('token'),
+              },
 
-      if (json.data.text) {
-        this.setState({
-          messages: this.state.messages.concat([json.data])
-        });
+              body: JSON.stringify({
+                message: parsedMessage.data,
+                userId: localStorage.getItem('id'), // TODO: get this from JWT on the server
+                token: localStorage.getItem('token'),
+              })
+            }).then((response) => {
+              console.log('did I get here?');
+              parsedMessage.data.deliveredTo.push(localStorage.getItem('id'));
+              parsedMessage.data.token = localStorage.getItem('token');
+              connection.send(JSON.stringify({
+                type: 'delivered',
+                data: parsedMessage.data,
+              }))
+            }).catch((err) => {
+              console.log(err);
+            });
+          }
+
+          console.log('parsed', parsedMessage.data);
+          if (parsedMessage.data.text) {
+            this.setState({
+              messages: this.state.messages.concat([parsedMessage.data])
+            });
+          }
+
+          break
       }
     };
   }

@@ -11,6 +11,7 @@ const Message = (props) => {
     <div styleName='message-holder'>
       <div styleName={props.mine ? 'my-message' : 'your-message'}>
         {props.message.text}
+        {props.isDelivered && 'delivered'}
         <div styleName="time">{moment(props.message.time).format('h:mm a')}</div>
       </div>
     </div>
