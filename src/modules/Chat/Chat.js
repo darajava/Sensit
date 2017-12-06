@@ -23,8 +23,6 @@ class Chat extends Component {
         text: message,
       }
 
-      console.log('sending')
-
       connection.send(JSON.stringify({ type: 'message', data: jsonMessage }));
   }
 
@@ -48,16 +46,51 @@ class Chat extends Component {
       let messages = [];
       for (let key in json) {
         if (json.hasOwnProperty(key)) {
+          this.markAsDelivered(json[key])
           messages.push(json[key]);
         }
       }
-
-      console.log(messages);
 
       this.setState({messages, loadingMessages: false});
       // // If we have this, then we should be logged in
       // localStorage.setItem('token', json.token);
     });
+  }
+
+  markAsDelivered(message) {
+    // If we haven't already marked this message as delivered to this client
+    if (!message.deliveredTo.includes(localStorage.getItem('id'))) {
+      fetch("http://" + process.env.REACT_APP_API_URL + "/message-delivered", {
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + localStorage.getItem('token'),
+        },
+
+        body: JSON.stringify({
+          message: message,
+          userId: localStorage.getItem('id'), // TODO: get this from JWT on the server
+          token: localStorage.getItem('token'),
+        })
+      }).then((response) => {
+        this.sendDeliveredMessage(message);
+      }).catch((err) => {
+        console.error(err);
+      });
+    }
+  }
+
+  sendDeliveredMessage(message) {
+    message = JSON.parse(JSON.stringify(message)); // Uuuugh js
+    
+    message.deliveredTo = localStorage.getItem('id');
+    message.token = localStorage.getItem('token');
+    
+    connection.send(JSON.stringify({
+      type: 'delivered',
+      data: message,
+    }));
   }
 
   constructor(props) {
@@ -67,8 +100,6 @@ class Chat extends Component {
       messages: [],
       loadingMessages: true,
     };
-
-    console.log(props);
 
     let myId = localStorage.getItem('id');
 
@@ -101,8 +132,6 @@ class Chat extends Component {
       // try to decode json (I assume that each message
       // from server is json)
       let parsedMessage = '';
-      console.log('message');
-      console.log(message);
       try {
         parsedMessage = JSON.parse(message.data);
       } catch (e) {
@@ -113,11 +142,10 @@ class Chat extends Component {
 
       switch (parsedMessage.type) {
         case 'deliver-reciept':
-          console.log('got delivery reciept');
+          // XXX: this can definitely be made more efficient
           for (let i = 0; i < this.state.messages.length; i++) {
             if (parsedMessage.data.messageId === this.state.messages[i]._id) {
               let updatedMessages = this.state.messages;
-              console.log(this.state.messages);
               updatedMessages[i].deliveredTo.push(parsedMessage.data.deliveredTo);
               this.setState({messages: updatedMessages});
             }
@@ -125,36 +153,11 @@ class Chat extends Component {
 
           break;
         case 'message':
-          // If the incoming message isn't ours, then mark it as delivered to the server
-          if (parsedMessage.data.sentBy !== localStorage.getItem('id')) {
-            fetch("http://" + process.env.REACT_APP_API_URL + "/message-delivered", {
-              method: "POST",
+          console.log(parsedMessage);
 
-              headers: {
-                "Content-Type": "application/json",
-                "Authorization": "Bearer " + localStorage.getItem('token'),
-              },
+          if (parsedMessage.data) {
+            this.markAsDelivered(parsedMessage.data);
 
-              body: JSON.stringify({
-                message: parsedMessage.data,
-                userId: localStorage.getItem('id'), // TODO: get this from JWT on the server
-                token: localStorage.getItem('token'),
-              })
-            }).then((response) => {
-              console.log('did I get here?');
-              parsedMessage.data.deliveredTo.push(localStorage.getItem('id'));
-              parsedMessage.data.token = localStorage.getItem('token');
-              connection.send(JSON.stringify({
-                type: 'delivered',
-                data: parsedMessage.data,
-              }))
-            }).catch((err) => {
-              console.log(err);
-            });
-          }
-
-          console.log('parsed', parsedMessage.data);
-          if (parsedMessage.data.text) {
             this.setState({
               messages: this.state.messages.concat([parsedMessage.data])
             });
