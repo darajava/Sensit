@@ -6,6 +6,8 @@ import MessageList from '../../components/MessageList/MessageList';
 import { ConnectedRouter } from 'react-router-redux';
 import createHistory from 'history/createBrowserHistory';
 import CSSModules from 'react-css-modules';
+import RoomHeader from '../../components/RoomHeader/RoomHeader';
+
 import styles from './styles.css';
 
 const history = createHistory();
@@ -171,6 +173,7 @@ class Chat extends Component {
   render() {
     return (
       <div styleName="background">
+        <RoomHeader user={this.props.location.query.roomInfo} />
         <MessageList messages={this.state.messages} loading={this.state.loadingMessages}/>
         <InputArea sendMessage={(msg) => this.sendMessage(msg)} />
       </div>
