@@ -21,10 +21,11 @@ const MessageList = (props) => {
     return true;
   }
 
-  for (let i = 0; i <= props.messages.length; i++) {
+  for (let i = 0; i < props.messages.length; i++) {
     if (props.messages[i]) {
       messageList.push(
         <Message
+          key={i}
           message={props.messages[i]}
           mine={props.messages[i].sentBy === localStorage.getItem('id')}
           isDelivered={isDelivered(props.messages[i])}
@@ -33,7 +34,7 @@ const MessageList = (props) => {
   }
 
   return (
-    <div styleName="list">
+    <div id="message-list" styleName="list">
       {messageList}
     </div>
   )

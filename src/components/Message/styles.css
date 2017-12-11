@@ -10,7 +10,7 @@
   display: block;
   border-radius: 5px;
   max-width: 70%;
-  margin: 10px;
+  margin: 5px 10px;
   width: auto;
   font-size: 14px;
   float: left;
@@ -33,6 +33,8 @@
 
 .info {
   display: block;
+  width: 100%;
+  text-align: right;
 }
 
 .time {
@@ -54,8 +56,10 @@
 
 .delivered {
   display: inline-block;
-  font-size: 10px;
+  font-size: 8px;
   color: #aaa;
+  position: relative;
+  top: -1px;
 }
 
 .loud {
@@ -64,4 +68,27 @@
 
 .louder {
   font-size: 18px;
+}
+
+.sent-icon {
+  color: #37babd;
+  background-color: white;
+  border-radius: 50%;
+  padding: 1px;
+  /*border: 2px solid #37babd;*/
+}
+
+.delivered-icon {
+  color: white;
+  background-color: #37babd;
+  border-radius: 50%;
+  padding: 1px;
+  /*border: 2px solid white;*/
+}
+
+.pending-icon {
+  color: #656565;
+  font-size: 9px;
+  position: relative;
+  top: 1px;
 }

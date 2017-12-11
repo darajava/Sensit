@@ -14,6 +14,110 @@ const history = createHistory();
 let connection;
 
 class Chat extends Component {
+  constructor(props) {
+    super(props);
+
+    // If we don't get props (i.e. hot reload or page reload)
+    // Then get them from localstorage
+    if (typeof props.location.query === 'undefined') {
+      props.location.query = JSON.parse(localStorage.getItem('chatInfo' + props.match.params.id));
+      console.log(props.location.query);
+    } else {
+      // otherwise save them to localstorage
+      localStorage.setItem('chatInfo' + props.match.params.id, JSON.stringify(props.location.query));
+    }
+
+    this.state = {
+      messages: [],
+      loadingMessages: true,
+      users: props.location.query.users,
+    };
+
+    let myId = localStorage.getItem('id');
+
+    let users = encodeURIComponent(JSON.stringify(props.location.query.users));
+
+    this.getMessages(props.match.params.id);
+
+    connection = new WebSocket(
+      'ws://' + process.env.REACT_APP_CHAT_URL + '?room=' + props.match.params.id +
+      '&users=' + users +
+      '&myId=' + myId
+    );
+
+    // if user is running mozilla then use its built-in WebSocket
+    window.WebSocket = window.WebSocket || window.MozWebSocket;
+
+    connection.onopen = () => {
+      // connection is opened and ready to use
+      // alert('opened');
+    };
+
+    connection.onerror = (error) => {
+      // an error occurred when sending/receiving data
+      // alert('error');
+      console.log(error)
+    };
+
+    connection.onmessage = (message) => {
+      // try to decode json (I assume that each message
+      // from server is json)
+      let parsedMessage = '';
+      try {
+        parsedMessage = JSON.parse(message.data);
+      } catch (e) {
+        console.log('This doesn\'t look like valid JSON: ',
+            message.data);
+        return;
+      }
+
+      console.log(message);
+
+      switch (parsedMessage.type) {
+        case 'deliver-reciept':
+          // XXX: this can definitely be made more efficient
+          for (let i = 0; i < this.state.messages.length; i++) {
+            if (parsedMessage.data.messageId === this.state.messages[i]._id) {
+              let updatedMessages = this.state.messages;
+              updatedMessages[i].deliveredTo.push(parsedMessage.data.deliveredTo);
+              this.setState({messages: updatedMessages});
+            }
+          }
+
+          break;
+        case 'message':
+          console.log(parsedMessage);
+
+          if (parsedMessage.data) {
+            this.markAsDelivered(parsedMessage.data);
+
+            let messages = this.state.messages;
+
+            for (var i = messages.length - 1; i >= 0; i--) {
+              if (parsedMessage.data.timestamp === messages[i].timestamp) {
+                messages.splice(i, 1); // Remove the fake message that we don't need
+                break;
+              } else if (parsedMessage.data.timestamp > messages[i].timestamp) {
+                break;
+              }
+            }
+
+            this.pushMessages(this.state.messages.concat([parsedMessage.data]));
+          }
+
+          break
+      }
+    };
+
+    this.pushMessages = this.pushMessages.bind(this);
+  }
+
+  pushMessages(messages) {
+    this.setState({messages}, () => {
+      let chatBox = document.getElementById('message-list');
+      chatBox.scrollTop = chatBox.scrollHeight;
+    })
+  }
 
   sendMessage(message) {
       if (!message) {
@@ -23,7 +127,18 @@ class Chat extends Component {
       let jsonMessage = {
         token: localStorage.getItem('token'),
         text: message,
+        timestamp: Date.now(),
+        deliveredTo: [],
+        forUsers: this.state.users,
+        sentBy: localStorage.getItem('id'),
+        fake: true, // This is when we fake the message before delivery to the server on the frontend
       }
+
+      let messages = this.state.messages;
+
+      messages.push(jsonMessage);
+
+      this.pushMessages(messages);
 
       connection.send(JSON.stringify({ type: 'message', data: jsonMessage }));
   }
@@ -53,9 +168,8 @@ class Chat extends Component {
         }
       }
 
-      this.setState({messages, loadingMessages: false});
-      // // If we have this, then we should be logged in
-      // localStorage.setItem('token', json.token);
+      this.setState({loadingMessages: false});
+      this.pushMessages(messages);
     });
   }
 
@@ -93,81 +207,6 @@ class Chat extends Component {
       type: 'delivered',
       data: message,
     }));
-  }
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      messages: [],
-      loadingMessages: true,
-    };
-
-    let myId = localStorage.getItem('id');
-
-    let users = encodeURIComponent(JSON.stringify(props.location.query.users));
-
-    this.getMessages(props.match.params.id);
-
-    connection = new WebSocket(
-      'ws://' + process.env.REACT_APP_CHAT_URL + '?room=' + props.match.params.id +
-      '&users=' + users +
-      '&myId=' + myId
-    );
-
-    // if user is running mozilla then use its built-in WebSocket
-    window.WebSocket = window.WebSocket || window.MozWebSocket;
-
-
-    connection.onopen = () => {
-      // connection is opened and ready to use
-      // alert('opened');
-    };
-
-    connection.onerror = (error) => {
-      // an error occurred when sending/receiving data
-      // alert('error');
-      console.log(error)
-    };
-
-    connection.onmessage = (message) => {
-      // try to decode json (I assume that each message
-      // from server is json)
-      let parsedMessage = '';
-      try {
-        parsedMessage = JSON.parse(message.data);
-      } catch (e) {
-        console.log('This doesn\'t look like valid JSON: ',
-            message.data);
-        return;
-      }
-
-      switch (parsedMessage.type) {
-        case 'deliver-reciept':
-          // XXX: this can definitely be made more efficient
-          for (let i = 0; i < this.state.messages.length; i++) {
-            if (parsedMessage.data.messageId === this.state.messages[i]._id) {
-              let updatedMessages = this.state.messages;
-              updatedMessages[i].deliveredTo.push(parsedMessage.data.deliveredTo);
-              this.setState({messages: updatedMessages});
-            }
-          }
-
-          break;
-        case 'message':
-          console.log(parsedMessage);
-
-          if (parsedMessage.data) {
-            this.markAsDelivered(parsedMessage.data);
-
-            this.setState({
-              messages: this.state.messages.concat([parsedMessage.data])
-            });
-          }
-
-          break
-      }
-    };
   }
 
   render() {

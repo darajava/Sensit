@@ -7,16 +7,20 @@ import Glyphicon from 'react-bootstrap/lib/Glyphicon'
 
 const Message = (props) => {
 
-  let delivered = <Glyphicon glyph="time" />;
+  let delivered = <span styleName="sent-icon"><Glyphicon glyph="ok" /></span>;
+
+  if (props.message.fake) {
+    delivered = <span styleName="pending-icon"><Glyphicon glyph="time" /></span>
+  }
 
   if (props.isDelivered) {
-    delivered = <Glyphicon glyph="ok" />;
+    delivered = <span styleName="delivered-icon"><Glyphicon glyph="ok" /></span>;
   }
 
   let bang = '';
 
-  if (props.message.text.length < 30 && props.message.text.endsWith('!')) {
-    if (props.message.text.endsWith('!!')) {
+  if (props.message.text.length < 50 && props.message.text.indexOf('!') > -1) {
+    if (props.message.text.indexOf('!!') > -1) {
       bang = 'louder';
     } else {
       bang = 'loud';
@@ -25,23 +29,36 @@ const Message = (props) => {
 
   // TODO: Seen
 
-  // Also TODO: proper pending/sent/delivered. Currently, pending isn't shown, sent is shown as pending
-  // and delivered is shown as sent. To fix this we need to fake the message on the frontend until it's
-  // sent to the server. Then at least we will have the first three stages down properly (pending/sent/delivered)
+  function decode(html) {
+    let text = document.createElement('textarea');
+    text.innerHTML = html;
+
+    let value = text.value;
+
+    let bold = /\*(.*)\*/;
+    let italic = /_(.*)_/;
+
+    // TODO lol get bold working... it's possible but will take some thinking
+    // value = value.replace(bold, <b>{'$1'}</b>).replace(italic, '<i>$1</i>')
+
+    return value;
+  }
 
   return (
     <div styleName='message-holder'>
       <div styleName={props.mine ? 'my-message' : 'your-message'}>
         <span styleName={bang}>
-          {props.message.text}
+          {decode(props.message.text)}
         </span>
         <span styleName="info">
           <div styleName="time">
-            {moment(props.message.time).format('h:mm a')}
+            {moment(props.message.createdAt).format('h:mm a')}
           </div>
-          <div styleName="delivered">
-            {delivered}
-          </div>
+          {props.mine && 
+            <div styleName="delivered">
+              {delivered}
+            </div>
+          }
         </span>
       </div>
     </div>
