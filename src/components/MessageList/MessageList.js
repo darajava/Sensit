@@ -10,13 +10,9 @@ const MessageList = (props) => {
   let messageList = [];
 
   function isDelivered(message) {
-    console.log(message);
-    
     message.deliveredTo.push(localStorage.getItem('id'));
 
     for (let i = 0; i < message.forUsers.length; i++) {
-      console.log(message.forUsers[i])
-      console.log(message.deliveredTo)
       if (!message.deliveredTo.includes(message.forUsers[i])) {
         return false;
       }

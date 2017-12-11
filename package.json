@@ -81,9 +81,8 @@
   },
   "scripts": {
     "deploy": "./deploy.sh",
-    "start": "node scripts/start.js",
-    "start:staging": "env-cmd ./.env.staging cross-env REACT_APP_ENV=staging ENABLE_TUNNEL=true npm run start",
-    "start:prelive": "env-cmd ./.env.prelive cross-env REACT_APP_ENV=prelive ENABLE_TUNNEL=true npm run start",
+    "start:staging": "env-cmd ./.env.staging cross-env REACT_APP_ENV=staging ENABLE_TUNNEL=true node scripts/start.js",
+    "start:prelive": "env-cmd ./.env.prelive cross-env REACT_APP_ENV=prelive ENABLE_TUNNEL=true node scripts/start.js",
     "start:production": "env-cmd ./.env.production cross-env REACT_APP_ENV=production npm run build",
     "deploy:staging": "./config/deploy.sh staging",
     "deploy:prelive": "./config/deploy.sh prelive",
