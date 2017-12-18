@@ -24,6 +24,12 @@ const RoomHeader = (props) => {
           {props.user.username}
         </span>
 
+
+        <span styleName="username">
+          { moment(props.user.lastOnline).format('h:mm:ss a') }
+          { typeof props.user.lastOnline }
+        </span>
+
         <span styleName="options">
           <Glyphicon glyph="option-vertical" />
         </span>

@@ -14,21 +14,21 @@ class Home extends Component {
     super();
 
     this.state = {
-      chats: [],
-      chatsLoaded: false,
+      users: [],
+      usersLoaded: false,
     }
 
-    this.getRecentChats = this.getRecentChats.bind(this);
+    this.getRecentUsers = this.getRecentUsers.bind(this);
   }
 
   componentWillMount() {
-    this.getRecentChats();
+    this.getRecentUsers();
   }
 
-  getRecentChats() {
-    this.setState({chatsLoaded: false});
+  getRecentUsers() {
+    this.setState({usersLoaded: false});
 
-    fetch("http://" + process.env.REACT_APP_API_URL + "/chats", {
+    fetch("http://" + process.env.REACT_APP_API_URL + "/users", {
       method: "POST",
 
       headers: {
@@ -39,16 +39,16 @@ class Home extends Component {
     .then( (response) => { 
        return response.json();
     }).then((json) => {
-      let chats = [];
+      let users = [];
       for (let key in json) {
         if (json.hasOwnProperty(key)) {
-          chats.push(json[key]);
+          users.push(json[key]);
         }
       }
 
-      console.log(chats);
+      console.log('users', users);
 
-      this.setState({chats, chatsLoaded: true});
+      this.setState({users, usersLoaded: true});
       // // If we have this, then we should be logged in
       // localStorage.setItem('token', json.token);
     });
@@ -57,18 +57,19 @@ class Home extends Component {
 
   render() {
 
-    let chats = [];
-    for (let i = 0; i < this.state.chats.length; i++) {
-      chats[i] =
+    let users = [];
+    for (let i = 0; i < this.state.users.length; i++) {
+      console.log('lusers', this.state.users[i])
+      users[i] =
         <div key={i}>
-          <ChatItem user={this.state.chats[i]} />
+          <ChatItem user={this.state.users[i]} />
         </div>;
     }
 
     return (
       <div>
-        {!this.state.chatsLoaded && <Loading />}
-        {this.state.chatsLoaded && chats}
+        {!this.state.usersLoaded && <Loading />}
+        {this.state.usersLoaded && users}
       </div>
     );
   }

@@ -31,6 +31,7 @@ class Chat extends Component {
       messages: [],
       loadingMessages: true,
       users: props.location.query.users,
+      user: props.location.query.user,
     };
 
     let myId = localStorage.getItem('id');
@@ -112,7 +113,17 @@ class Chat extends Component {
     this.pushMessages = this.pushMessages.bind(this);
   }
 
+  componentDidMount() {
+    setInterval(() => this.getLastOnline(this.state.user._id), 5000); // Check every minute for new online status;
+  }
+
   pushMessages(messages) {
+    console.log(messages);
+    
+    messages.sort((a, b) => {
+      return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+    });
+
     this.setState({messages}, () => {
       let chatBox = document.getElementById('message-list');
       chatBox.scrollTop = chatBox.scrollHeight;
@@ -127,11 +138,12 @@ class Chat extends Component {
       let jsonMessage = {
         token: localStorage.getItem('token'),
         text: message,
+        createdAt: Date.now(),
         timestamp: Date.now(),
         deliveredTo: [],
         forUsers: this.state.users,
         sentBy: localStorage.getItem('id'),
-        fake: true, // This is when we fake the message before delivery to the server on the frontend
+        fake: true, // This is when we fake the message on the frontend before delivery to the server
       }
 
       let messages = this.state.messages;
@@ -160,6 +172,7 @@ class Chat extends Component {
     .then( (response) => { 
        return response.json();
     }).then((json) => {
+      console.log('xxx', json);
       let messages = [];
       for (let key in json) {
         if (json.hasOwnProperty(key)) {
@@ -196,6 +209,25 @@ class Chat extends Component {
       });
     }
   }
+  
+  getLastOnline(userId) {
+    fetch("http://" + process.env.REACT_APP_API_URL + "/last-online?id=" + userId, {
+      method: "GET",
+
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + localStorage.getItem('token'),
+      },
+    })
+    .then( (response) => { 
+       return response.json();
+    }).then((json) => {
+      this.state.user.lastOnline = json.lastOnline;
+      this.setState(this.state.user);
+      console.log('user roomheader', json);
+      json.lastOnline;
+    });
+  }
 
   sendDeliveredMessage(message) {
     message = JSON.parse(JSON.stringify(message)); // Uuuugh js
@@ -212,7 +244,7 @@ class Chat extends Component {
   render() {
     return (
       <div styleName="background">
-        <RoomHeader user={this.props.location.query.roomInfo} />
+        <RoomHeader user={this.state.user} />
         <MessageList messages={this.state.messages} loading={this.state.loadingMessages}/>
         <InputArea sendMessage={(msg) => this.sendMessage(msg)} />
       </div>

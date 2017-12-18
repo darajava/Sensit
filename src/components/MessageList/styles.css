@@ -1,4 +1,4 @@
 .list {
-  max-height: calc(100vh - 100px);
-	overflow-y: auto;
+  max-height: calc(100vh - 123px); /* sum of heights of the default header and footer on page load */
+  overflow-y: auto;
 }
