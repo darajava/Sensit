@@ -10,15 +10,34 @@
   font-size: 16px;
 }
 
+.back-button {
+  display: inline-block;
+  width: 70px;
+  float: left;
+}
+
 .glyph {
   position: relative;
   top: 1px;
   color: white;
 }
 
+.user-info {
+  display: inline-block;
+  position: relative;
+  top: -3px;
+}
+
 .username {
   position: relative;
   top: 2px;
+}
+
+.last-online {
+  font-size: 11px;
+  color: #BAEBEB;
+  display: block;
+  font-weight: normal;
 }
 
 .profile-image {
