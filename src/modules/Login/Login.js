@@ -59,7 +59,7 @@ class Login extends Component {
         return <Redirect to='/'/>;
       }
 
-      window.localStorage.clear(); // Always log the user out
+      // window.localStorage.clear(); // Always log the user out
 
       return (
         <div>
