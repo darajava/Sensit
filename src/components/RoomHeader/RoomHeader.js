@@ -27,7 +27,7 @@ const RoomHeader = (props) => {
   return (
       <div styleName='chat-item'>
         <div styleName='back-button'>
-          <Link to={{ pathname: "/home", }} >
+          <Link to={{ pathname: "/", }} >
             <span styleName='glyph'>
               <Glyphicon glyph="menu-left" />
             </span>
