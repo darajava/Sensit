@@ -60,3 +60,22 @@
   width: 43px;
   text-align: center;
 }
+
+.online-light {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #4dd44d;
+  display: inline-block;
+  border: 2px solid white;
+  position: relative;
+  top: -17px;
+  left: 45px;
+}
+
+
+.offline-light {
+  composes: online-light;
+
+  background-color: #ccc;
+}

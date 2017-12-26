@@ -1,8 +1,8 @@
 import React , { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
-import { connect } from 'react-redux';
 import PrivateRoute from '../../components/PrivateRoute';
 import Login from '../Login/Login';
+import Logout from '../../components/Login/Logout';
 import Register from '../Register/Register';
 import Chat from '../Chat/Chat';
 import Home from '../Home/Home';
@@ -52,10 +52,10 @@ class MainLayout extends Component {
     }
 }
 
-function mapStateToProps(state) {
-  return {
-    sessionData: state.getIn(['loginState', 'sessionData']),
-  }
-}
+// function mapStateToProps(state) {
+//   return {
+//     sessionData: state.getIn(['loginState', 'sessionData']),
+//   }
+// }
 
-export default connect(mapStateToProps, null)(MainLayout);
+export default MainLayout;

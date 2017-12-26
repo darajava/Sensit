@@ -7,9 +7,13 @@ import MainLayout from './modules/MainLayout/MainLayout';
 import Loading from './components/Loading/Loading';
 import Logo from './components/Logo/Logo';
 
+import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+
+
 import store from './redux/store';
 import { history } from './redux/store';
-
 
 class App extends Component {
   constructor() {
@@ -77,9 +81,11 @@ class App extends Component {
       );
     }
     return (
-      <Provider store={store}>
-        <MainLayout history={history} />
-      </Provider>
+      <MuiThemeProvider>
+        <Provider store={store}>
+          <MainLayout history={history} />
+        </Provider>
+      </MuiThemeProvider>
     );
   }
 }
