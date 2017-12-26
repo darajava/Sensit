@@ -6,7 +6,7 @@ import styles from './styles.css';
 const Logo = (props) => {
 
   return (
-    <div styleName={!props.inline ? "center" : 'inline'}>
+    <div styleName={!props.inline ? (props.login ? "login" : "center") : 'inline'}>
       <div styleName="logo">
         <span styleName="sens">Sens</span><span styleName="it">it</span>
       </div>

@@ -6,24 +6,29 @@ import Glyphicon from 'react-bootstrap/lib/Glyphicon';
 
 import { Link } from 'react-router-dom';
 
+import Logo from '../Logo/Logo';
+
 const Login = (props) => {
 
   return (
-    <div>
-      <input id="username" type="text" name="username" />
-      <input id="password" type="password" name="password" />
+    <div styleName="background">
+      <div styleName="loginBox">
+        <Logo login={true} />
+        <input styleName="input" id="username" type="text" name="username" placeholder="Username" />
+        <input styleName="input" id="password" type="password" name="password" placeholder="Password" />
 
-      <button type="submit" onClick={
-        () =>
-        props.loginUser(
-          document.getElementById('username').value,
-          document.getElementById('password').value
-        )
-      }>
-        Login
-      </button>
+        <button styleName="input" type="submit" onClick={
+          () =>
+          props.loginUser(
+            document.getElementById('username').value,
+            document.getElementById('password').value
+          )
+        }>
+          Login
+        </button>
 
-      <Link to='/register'>Don't have an account? Register here</Link>
+        <Link to='/register'>Don't have an account? Register here</Link>
+      </div>
     </div>
   )
 }
