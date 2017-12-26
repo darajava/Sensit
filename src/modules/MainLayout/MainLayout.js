@@ -1,22 +1,18 @@
 import React , { Component } from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, BrowserRouter } from 'react-router-dom';
 import PrivateRoute from '../../components/PrivateRoute';
 import Login from '../Login/Login';
 import Logout from '../../components/Login/Logout';
 import Register from '../Register/Register';
 import Chat from '../Chat/Chat';
 import Home from '../Home/Home';
-import { ConnectedRouter } from 'react-router-redux';
-import createHistory from 'history/createBrowserHistory';
-
-const history = createHistory();
 
 class MainLayout extends Component {
 
     render() {
       return (
         <div>
-          <ConnectedRouter history={history}>
+          <BrowserRouter history={this.props.history}>
             <div className="app">
               <header className="primary-header">
                 <Switch>
@@ -38,15 +34,15 @@ class MainLayout extends Component {
                   </Switch>
                 </nav>
                 <Switch>
-                  <Route path='/login' component={Login} />
-                  <Route path='/logout' component={Login} />
-                  <Route path='/register' component={Register} />
-                  <PrivateRoute exact path='/' component={Home} isAuthenticated={localStorage.getItem('token')} />
-                  <PrivateRoute path='/chat/:id' component={Chat} isAuthenticated={localStorage.getItem('token')} />
+                  <PrivateRoute exact path='/' component={Home} isAuthenticated={() => localStorage.getItem('token')} />
+                  <PrivateRoute exact path='/chat/:id' component={Chat} isAuthenticated={() => localStorage.getItem('token')} />
+                  <Route exact path='/login' component={Login} />
+                  <Route exact path='/logout' component={Login} />
+                  <Route exact path='/register' component={Register} />
                 </Switch>
               </main>
             </div>
-          </ConnectedRouter>
+          </BrowserRouter>
         </div>
         );
     }

@@ -12,7 +12,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
 
-import store from './redux/store';
+// import store from './redux/store';
 import { history } from './redux/store';
 
 class App extends Component {
@@ -64,27 +64,13 @@ class App extends Component {
   }
 
   componentWillMount(){
-    persistStore(store, {blacklist: ['signupState']}, () => {
-      setTimeout( () => {
-        this.setState({ rehydrated: true })
-      }, 500)
-    })
+
   }
 
   render() {
-    if(!this.state.rehydrated) {
-      return(
-        <div>
-          <Loading />
-          <Logo />
-        </div>
-      );
-    }
     return (
       <MuiThemeProvider>
-        <Provider store={store}>
-          <MainLayout history={history} />
-        </Provider>
+        <MainLayout history={history} />
       </MuiThemeProvider>
     );
   }

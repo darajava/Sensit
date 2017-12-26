@@ -2,6 +2,7 @@ import React , { Component } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PrivateRoute from '../../components/PrivateRoute';
+import Loading from '../../components/Loading/Loading';
 import { ConnectedRouter } from 'react-router-redux';
 import createHistory from 'history/createBrowserHistory';
 
@@ -46,8 +47,11 @@ class Login extends Component {
           // Save logged in user's ID
           localStorage.setItem('id', json.id);
 
-          this.setState({ redirect: true })
-          // this.props.history.push('/');
+          this.setState({ loading: true })
+
+          setTimeout(() => {
+            this.setState({ redirect: true })
+          }, 400);
         } else {
           alert('Invalid Login')
         }
@@ -56,10 +60,15 @@ class Login extends Component {
 
     render() {
       if (this.state.redirect) {
-        return <Redirect to='/'/>;
+        return <Redirect exact to='/'/>;
       }
 
-      // window.localStorage.clear(); // Always log the user out
+
+      if (this.state.loading) {
+        return <Loading />;
+      } else {
+        window.localStorage.clear(); // Always log the user out
+      }
 
       return (
         <div>
@@ -75,4 +84,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default withRouter(Login);
+export default Login;
