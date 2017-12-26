@@ -1,5 +1,5 @@
 import React , { Component } from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PrivateRoute from '../../components/PrivateRoute';
 import { ConnectedRouter } from 'react-router-redux';
@@ -16,7 +16,11 @@ class Login extends Component {
     constructor() {
       super();
 
-      window.localStorage.clear(); // Always log the user out
+      // window.localStorage.clear(); // Always log the user out
+
+      this.state = {
+        redirect: false,
+      }
 
       this.loginUser = this.loginUser.bind(this);
     }
@@ -45,7 +49,8 @@ class Login extends Component {
           console.log(json.id);
           localStorage.setItem('id', json.id);
 
-          this.props.history.push('/');
+          this.setState({ redirect: true })
+          // this.props.history.push('/');
         } else {
           alert('Invalid Login')
         }
@@ -53,6 +58,10 @@ class Login extends Component {
     }
 
     render() {
+      if (this.state.redirect) {
+        return <Redirect to='/'/>;
+      }
+
       return (
         <div>
           <LoginView loginUser={this.loginUser} />
