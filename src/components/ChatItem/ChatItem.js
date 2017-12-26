@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import CSSModules from 'react-css-modules';
 import styles from './styles.css';
 import Glyphicon from 'react-bootstrap/lib/Glyphicon'
+import {withRouter} from "react-router-dom";
 
 let hash = require('object-hash');
 
@@ -21,5 +22,5 @@ const ChatItem = (props) => {
         
 }
 
-export default CSSModules(ChatItem, styles);
+export default withRouter(CSSModules(ChatItem, styles));
  

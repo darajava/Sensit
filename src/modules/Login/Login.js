@@ -16,6 +16,8 @@ class Login extends Component {
     constructor() {
       super();
 
+      window.localStorage.clear(); // Always log the user out
+
       this.loginUser = this.loginUser.bind(this);
     }
 
@@ -43,7 +45,7 @@ class Login extends Component {
           console.log(json.id);
           localStorage.setItem('id', json.id);
 
-          this.props.history.push('/home');
+          this.props.history.push('/');
         } else {
           alert('Invalid Login')
         }
@@ -65,4 +67,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps, null)(Login);
+export default withRouter(Login);

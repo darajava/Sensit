@@ -9,7 +9,6 @@ import Logo from './components/Logo/Logo';
 
 import store from './redux/store';
 import { history } from './redux/store';
-import './segment';
 
 
 class App extends Component {
