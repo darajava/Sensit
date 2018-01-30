@@ -13,7 +13,7 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
 
 // import store from './redux/store';
-import { history } from './redux/store';
+// import { history } from './redux/store';
 
 class App extends Component {
   constructor() {
@@ -70,7 +70,7 @@ class App extends Component {
   render() {
     return (
       <MuiThemeProvider>
-        <MainLayout history={history} />
+        <MainLayout />
       </MuiThemeProvider>
     );
   }

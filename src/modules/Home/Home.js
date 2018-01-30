@@ -104,11 +104,11 @@ class Home extends Component {
             {!this.state.usersLoaded && <Loading />}
             {this.state.usersLoaded && users}
           </Tab>
-          <Tab value={2} style={ this.getStyle(this.state.activeIndex === 2) } label="Rolodex" >
+          <Tab value={2} style={ this.getStyle(this.state.activeIndex === 2) } label="Contacts" >
             {!this.state.usersLoaded && <Loading />}
             {this.state.usersLoaded && users}
           </Tab>
-          <Tab value={3} style={ this.getStyle(this.state.activeIndex === 3) } label="Calls" >
+          <Tab value={3} style={ this.getStyle(this.state.activeIndex === 3) } label="Groups" >
             {!this.state.usersLoaded && <Loading />}
             {this.state.usersLoaded && users}
           </Tab>
