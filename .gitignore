@@ -9,6 +9,7 @@ stats.json
 npm-debug.log
 .idea
 .js.snap
+package-lock.json
 
 # env files
 .env.staging
