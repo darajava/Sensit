@@ -4,9 +4,8 @@ import CSSModules from 'react-css-modules';
 import styles from './styles.css';
 
 const Loading = (props) => {
-
   return (
-    <div styleName="center">
+    <div>
       <div styleName="loading">
         <div></div>
       </div>

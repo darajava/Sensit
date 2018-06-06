@@ -11,6 +11,12 @@ const InputArea = (props) => {
       e.preventDefault();
       props.sendMessage(document.getElementById('message-box').innerHTML);
       document.getElementById('message-box').innerHTML = '';
+      props.typing(false);
+    } else {
+      if (e.key.length == 1) {
+        props.typing(true);
+        console.log(e.key.length);
+      }
     }
   };
 

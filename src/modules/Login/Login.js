@@ -40,7 +40,6 @@ class Login extends Component {
       .then( (response) => { 
          return response.json();
       }).then((json) => {
-
         if (json.success) {
           // If we have this, then we should be logged in
           localStorage.setItem('token', json.token);
@@ -62,7 +61,6 @@ class Login extends Component {
       if (this.state.redirect) {
         return <Redirect exact to='/'/>;
       }
-
 
       if (this.state.loading) {
         return <Loading />;

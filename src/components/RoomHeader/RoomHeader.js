@@ -15,7 +15,9 @@ const RoomHeader = (props) => {
 
   let dateString; 
 
-  if (isOnline) {
+  if (props.typing) {
+    dateString = 'typing...';
+  } else if (isOnline) {
     dateString = 'online';
   } else if (iscurrentDate) {
     dateString = "last seen today at " + moment(props.user.lastOnline).format('h:mma');

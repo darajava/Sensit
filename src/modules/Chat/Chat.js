@@ -17,6 +17,14 @@ class Chat extends Component {
   constructor(props) {
     super(props);
 
+    this.typingTimeout = null;
+
+    this.updateTyping = this.updateTyping.bind(this);
+  }
+
+
+  componentWillMount() {
+    let props = this.props;
     // If we don't get props (i.e. hot reload or page reload)
     // Then get them from localstorage
     if (typeof props.location.query === 'undefined') {
@@ -86,6 +94,18 @@ class Chat extends Component {
           }
 
           break;
+        case 'typing':
+          console.log(parsedMessage);
+
+          if (parsedMessage.data) {
+            this.setState({isTyping: parsedMessage.data.typing});
+
+            clearTimeout(this.typingTimeout);
+
+            this.typingTimeout = setTimeout(() => this.setState({isTyping: false}), 2000);
+          }
+
+          break;
         case 'message':
           console.log(parsedMessage);
 
@@ -114,7 +134,7 @@ class Chat extends Component {
   }
 
   componentDidMount() {
-    setInterval(() => this.getLastOnline(this.state.user._id), 5000); // Check every minute for new online status;
+    setInterval(() => this.getLastOnline(this.state.user._id), 5000); // Check every 5s for new online status;
   }
 
   pushMessages(messages) {
@@ -229,6 +249,17 @@ class Chat extends Component {
     });
   }
 
+  updateTyping(typing) {  
+      let jsonMessage = {
+        token: localStorage.getItem('token'),
+        userId: localStorage.getItem('id'),
+        timestamp: Date.now(),
+        typing,
+      }
+
+      connection.send(JSON.stringify({ type: 'typing', data: jsonMessage }));
+  }
+
   sendDeliveredMessage(message) {
     message = JSON.parse(JSON.stringify(message)); // Uuuugh js
     
@@ -242,11 +273,12 @@ class Chat extends Component {
   }
 
   render() {
+
     return (
       <div styleName="background">
-        <RoomHeader user={this.state.user} />
+        <RoomHeader user={this.state.user} typing={this.state.isTyping} />
         <MessageList messages={this.state.messages} loading={this.state.loadingMessages}/>
-        <InputArea sendMessage={(msg) => this.sendMessage(msg)} />
+        <InputArea sendMessage={(msg) => this.sendMessage(msg)} typing={this.updateTyping} />
       </div>
     );
   }

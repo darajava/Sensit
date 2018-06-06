@@ -62,7 +62,11 @@ class Home extends Component {
       let users = [];
       for (let key in json) {
         if (json.hasOwnProperty(key)) {
-          users.push(json[key]);
+          console.log(json[key]);
+          console.log(localStorage.getItem('id'))
+          if (json[key]._id !== localStorage.getItem('id')) {
+            users.push(json[key]);            
+          }
         }
       }
 
