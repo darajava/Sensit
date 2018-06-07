@@ -21,6 +21,34 @@ const MessageList = (props) => {
     return true;
   }
 
+  function isLastSeen(message) {    
+    for (let i = props.messages.length - 1; i >= 0; i--) {
+        if (isSeen(props.messages[i])) {
+          if (props.messages[i]._id !== message._id) {
+            return false;
+          } else {
+            return true;
+          }
+        }
+    }
+
+    return false;
+  }
+
+  function isSeen(message) {
+    // console.log('seenby', message.seenBy);
+    // console.log(localStorage.getItem('id'));
+    if (message.seenBy && message.seenBy.length) {
+      for (let i = 0; i < message.seenBy.length; i++) {
+        if (message.seenBy[i] !== localStorage.getItem('id')) {
+          return true;
+        }
+      }
+    } 
+
+    return false;
+  }
+
   for (let i = 0; i < props.messages.length; i++) {
     if (props.messages[i]) {
       messageList.push(
@@ -29,7 +57,10 @@ const MessageList = (props) => {
           message={props.messages[i]}
           mine={props.messages[i].sentBy === localStorage.getItem('id')}
           isDelivered={isDelivered(props.messages[i])}
-        />);
+          isSeen={isSeen(props.messages[i])}
+          isLastSeen={isLastSeen(props.messages[i])}
+        />
+      );
     }
   }
 

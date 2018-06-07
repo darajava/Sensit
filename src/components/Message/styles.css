@@ -39,7 +39,7 @@
 
 .time {
   text-align: right;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: normal;
   color: #aaa;
   display: inline-block;
@@ -48,7 +48,7 @@
 
 .my-message .time {
   text-align: right;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: normal;
   display: inline-block;
   color: #aaa;
@@ -60,6 +60,27 @@
   color: #aaa;
   position: relative;
   top: -1px;
+  width: 12px;
+}
+
+.seen-image {
+  width: 12px;
+  height: 12px;
+  display: inline-block;
+
+}
+
+.fade-out {
+  opacity: 0;
+
+  transition: opacity 0.5s;
+}
+
+.seen-image img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  box-shadow: 0px 1px 13px -1px #63c8c3;
 }
 
 .loud {
@@ -67,7 +88,7 @@
 }
 
 .louder {
-  font-size: 17px;
+  font-size: 18px;
   font-weight: bold;
 }
 

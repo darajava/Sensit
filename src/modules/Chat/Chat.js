@@ -20,6 +20,7 @@ class Chat extends Component {
     this.typingTimeout = null;
 
     this.updateTyping = this.updateTyping.bind(this);
+    this.handleReciept = this.handleReciept.bind(this);
   }
 
 
@@ -84,14 +85,12 @@ class Chat extends Component {
 
       switch (parsedMessage.type) {
         case 'deliver-reciept':
-          // XXX: this can definitely be made more efficient
-          for (let i = 0; i < this.state.messages.length; i++) {
-            if (parsedMessage.data.messageId === this.state.messages[i]._id) {
-              let updatedMessages = this.state.messages;
-              updatedMessages[i].deliveredTo.push(parsedMessage.data.deliveredTo);
-              this.setState({messages: updatedMessages});
-            }
-          }
+          this.handleReciept(parsedMessage, 'deliveredTo');
+
+          break;
+
+        case 'seen-reciept':
+          this.handleReciept(parsedMessage, 'seenBy');
 
           break;
         case 'typing':
@@ -131,14 +130,29 @@ class Chat extends Component {
     };
 
     this.pushMessages = this.pushMessages.bind(this);
+    this.markAllAsSeen = this.markAllAsSeen.bind(this);
   }
 
   componentDidMount() {
     setInterval(() => this.getLastOnline(this.state.user._id), 5000); // Check every 5s for new online status;
+    document.getElementById('seen').addEventListener('click', this.markAllAsSeen);
+  }
+
+  // Take a delivery or seen reciept and reflect it in frontend if needed
+  handleReciept(parsedMessage, type) {
+    for (let i = this.state.messages.length - 1; i >= 0; i--) {
+      if (parsedMessage.data.messageId === this.state.messages[i]._id) {
+        let updatedMessages = this.state.messages;
+        updatedMessages[i][type].push(parsedMessage.data[type]);
+        this.setState({messages: updatedMessages});
+
+        break;
+      }
+    }
   }
 
   pushMessages(messages) {
-    console.log(messages);
+    // console.log(messages);
     
     messages.sort((a, b) => {
       return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
@@ -229,6 +243,36 @@ class Chat extends Component {
       });
     }
   }
+
+  markAllAsSeen() {    
+    for (let i = this.state.messages.length - 1; i >= 0; i--) {
+      let message = this.state.messages[i];
+
+      // If we haven't already marked this message as delivered to this client
+      if (!message.seenBy.includes(localStorage.getItem('id'))) {
+        fetch("http://" + process.env.REACT_APP_API_URL + "/message-seen", {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + localStorage.getItem('token'),
+          },
+
+          body: JSON.stringify({
+            message: message,
+            userId: localStorage.getItem('id'), // TODO: get this from JWT on the server
+            token: localStorage.getItem('token'),
+          })
+        }).then((response) => {
+          this.sendSeenMessage(message);
+        }).catch((err) => {
+          console.error(err);
+        });
+      } else {
+        break;
+      }
+    }
+  }
   
   getLastOnline(userId) {
     fetch("http://" + process.env.REACT_APP_API_URL + "/last-online?id=" + userId, {
@@ -268,6 +312,18 @@ class Chat extends Component {
     
     connection.send(JSON.stringify({
       type: 'delivered',
+      data: message,
+    }));
+  }
+
+  sendSeenMessage(message) {
+    message = JSON.parse(JSON.stringify(message)); // Uuuugh js
+    
+    message.seenBy = localStorage.getItem('id');
+    message.token = localStorage.getItem('token');
+    
+    connection.send(JSON.stringify({
+      type: 'seen',
       data: message,
     }));
   }

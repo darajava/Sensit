@@ -8,13 +8,20 @@ import Glyphicon from 'react-bootstrap/lib/Glyphicon'
 const Message = (props) => {
 
   let delivered = <span styleName="sent-icon"><Glyphicon glyph="ok" /></span>;
-
-  if (props.message.fake) {
-    delivered = <span styleName="pending-icon"><Glyphicon glyph="time" /></span>
-  }
-
-  if (props.isDelivered) {
+  
+  if (props.isLastSeen) {
+    delivered = <span styleName="seen-image">
+                  <img src={props.user && props.user.image ? props.user.image : 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png' } />
+                </span>
+  } else if (props.isSeen) {
+    let fadeStyle = styles["seen-image"] + " " + styles["fade-out"];
+    delivered = <span className={fadeStyle}>
+                  <img src={props.user && props.user.image ? props.user.image : 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png' } />
+                </span>
+  } else if (props.isDelivered) {
     delivered = <span styleName="delivered-icon"><Glyphicon glyph="ok" /></span>;
+  } else if (props.message.fake) {
+    delivered = <span styleName="pending-icon"><Glyphicon glyph="time" /></span>
   }
 
   let bang = '';

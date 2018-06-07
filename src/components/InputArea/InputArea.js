@@ -21,7 +21,7 @@ const InputArea = (props) => {
   };
 
   return (
-    <div styleName="bottom">
+    <div styleName="bottom" id="seen">
       <div styleName="input-holder">
         <span
           id="message-box"
