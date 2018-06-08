@@ -4,31 +4,37 @@
 }
 
 .message {
-  box-shadow: 1px 1px 2px 0px rgba(166,166,166,0.4);
-  padding: 5px 10px;
+  box-shadow: 0 1px 0.5px rgba(0, 0, 0, 0.13);
   display: inline-block;
   display: block;
-  border-radius: 5px;
+  border-radius: 6px;
   max-width: 70%;
   margin: 5px 10px;
   width: auto;
   font-size: 14px;
   float: left;
   word-break: break-word;
+  padding: 10px 15px 7px 14px;
 }
 
 .my-message {
   composes: message;
 
   float: right;
-  background-color: #c1e7e8dd;
+  background-color: #c1e7e8;
   color: #444;
+  
+  border-right: 1px solid #c7c7c7;
+  border-bottom: 1px solid #c7c7c7;
+
+  padding-left: 12px;
 }
 
 .your-message {
   composes: message;
 
   background-color: white;
+  padding-right: 12px;
 }
 
 .info {
@@ -39,33 +45,33 @@
 
 .time {
   text-align: right;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: normal;
-  color: #aaa;
+  color: #989494;
   display: inline-block;
   margin-right: 5px;
 }
 
 .my-message .time {
-  text-align: right;
-  font-size: 12px;
-  font-weight: normal;
-  display: inline-block;
-  color: #aaa;
+  float: left;
+  position: relative;
+  top: 2px;
 }
 
 .delivered {
   display: inline-block;
-  font-size: 8px;
+  font-size: 11px;
   color: #aaa;
+  float: right;
+  width: 16px;
   position: relative;
-  top: -1px;
-  width: 12px;
+  top: 8px;
+  left: 16px;
 }
 
 .seen-image {
-  width: 12px;
-  height: 12px;
+  width: 16px;
+  height: 16px;
   display: inline-block;
 
 }
@@ -80,7 +86,11 @@
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  box-shadow: 0px 1px 13px -1px #63c8c3;
+  border: 1px solid #75757561;
+  box-sizing: content-box;
+  position: relative;
+  top: -2px;
+  right: 2px;
 }
 
 .loud {
@@ -93,8 +103,8 @@
 }
 
 .sent-icon {
-  color: #37babd;
-  background-color: white;
+  color: white;
+  background-color: #25c8cc52;
   border-radius: 50%;
   padding: 1px;
   /*border: 2px solid #37babd;*/
@@ -105,7 +115,9 @@
   background-color: #37babd;
   border-radius: 50%;
   padding: 1px;
+  opacity: 0.7;
   /*border: 2px solid white;*/
+
 }
 
 .pending-icon {
@@ -113,4 +125,5 @@
   font-size: 9px;
   position: relative;
   top: 1px;
+
 }

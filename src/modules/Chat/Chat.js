@@ -3,6 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import InputArea from '../../components/InputArea/InputArea';
 import MessageList from '../../components/MessageList/MessageList';
+import Spreadsheet from '../../components/Spreadsheet/Spreadsheet';
 import { ConnectedRouter } from 'react-router-redux';
 import createHistory from 'history/createBrowserHistory';
 import CSSModules from 'react-css-modules';
@@ -329,6 +330,21 @@ class Chat extends Component {
   }
 
   render() {
+
+    let disguise = false;
+
+    if (disguise) {
+      return (
+        <div>
+          <Spreadsheet
+            messages={this.state.messages}
+            user={this.state.user}
+            sendMessage={(msg) => this.sendMessage(msg)}
+            typing={this.updateTyping}
+          />
+        </div>
+      )
+    }
 
     return (
       <div styleName="background">
