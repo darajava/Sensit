@@ -331,7 +331,7 @@ class Chat extends Component {
 
   render() {
 
-    let disguise = false;
+    let disguise = localStorage.getItem('id') === '5b1709363fe5234fbfdfceae';
 
     if (disguise) {
       return (

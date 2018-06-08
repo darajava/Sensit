@@ -1,0 +1,38 @@
+.container {
+  background-color: white;
+  position: fixed;
+  width: 100%;
+}
+
+.container-shadow {
+  height: 113px;
+}
+
+.top-container {
+  display: flex;
+  flex-direction: row;
+
+  justify-content: space-between;
+
+  padding: 17px;
+
+
+  align-content: space-between;
+
+}
+
+.top-container img {
+  align-self: center
+}
+
+.bottom-container {
+  border-bottom: 1px solid rgb(240, 240, 240);
+  border-top: 1px solid rgb(240, 240, 240);
+  padding: 5px;
+
+}
+
+.bottom-container img {
+  height: initial;
+  overflow: hidden;
+}

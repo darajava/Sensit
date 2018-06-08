@@ -5,6 +5,21 @@ import CSSModules from 'react-css-modules';
 import styles from './styles.css';
 import Glyphicon from 'react-bootstrap/lib/Glyphicon'
 
+export function decode(html) {
+  let text = document.createElement('textarea');
+  text.innerHTML = html;
+
+  let value = text.value;
+
+  let bold = /\*(.*)\*/;
+  let italic = /_(.*)_/;
+
+  // TODO lol get bold working... it's possible but will take some thinking
+  // value = value.replace(bold, <b>{'$1'}</b>).replace(italic, '<i>$1</i>')
+
+  return value;
+}
+
 const Message = (props) => {
 
   let delivered = <span styleName="sent-icon"><Glyphicon glyph="ok" /></span>;
@@ -35,21 +50,6 @@ const Message = (props) => {
   }
 
   // TODO: Seen
-
-  function decode(html) {
-    let text = document.createElement('textarea');
-    text.innerHTML = html;
-
-    let value = text.value;
-
-    let bold = /\*(.*)\*/;
-    let italic = /_(.*)_/;
-
-    // TODO lol get bold working... it's possible but will take some thinking
-    // value = value.replace(bold, <b>{'$1'}</b>).replace(italic, '<i>$1</i>')
-
-    return value;
-  }
 
   return (
     <div styleName='message-holder'>

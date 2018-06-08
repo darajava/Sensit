@@ -428,12 +428,12 @@ span.data-grid-container,span.data-grid-container:focus{
 
 .data-grid-container .data-grid .cell .data-editor,.data-grid-container .data-grid .cell .value-viewer{
     display: block;
-    direction: rtl;
-    max-width: 100px;
     word-wrap: break-word;
     height: 100%;
     width: 100%;
-
+    white-space: nowrap;
+    padding-left: 3px;
+    padding-right: 3px;
 }
 .custom-sheet{
     -webkit-box-sizing:border-box;
