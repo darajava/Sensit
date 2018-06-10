@@ -665,3 +665,22 @@ pre{
     color:#ddd
 }
 /*# sourceMappingURL=main.aea61fe8.css.map*/
+
+
+/*
+
+failed attempt at making the first row sticky
+close, but not there
+
+.data-grid tr:first-child {
+    position: fixed;
+    width: 100%;
+    display: flex;
+}
+
+.data-grid tr:first-child td {
+    flex-grow: 1;
+    box-sizing: border-box;
+    border: none;    
+}
+*/

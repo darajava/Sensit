@@ -1,0 +1,54 @@
+.menu {
+  position: absolute;
+  width: 200px;
+  right: 21px;
+  background-color: white;
+  top: 23px;
+  z-index: 100;
+  box-shadow: 1px 1px 9px 1px rgba(0, 0, 0, 0.15);
+}
+
+.menu.fade-in {
+  animation: fadeIn 0.2s ease-out;
+}
+
+.menu.fade-out {
+  animation: fadeOut 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+.menu-item {
+  margin-top:1px;
+  margin-bottom: 1px;
+  color: #333;
+  font-size: 16px;
+  font-weight: normal;
+  background-color: white;
+  transition: background-color 0.3s;
+}
+
+.menu-item:hover {
+  color: #111;
+  background-color: #f4f4f4;
+  transition: background-color 0.3s;
+  cursor: pointer;
+}

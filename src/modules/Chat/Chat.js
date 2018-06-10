@@ -1,3 +1,50 @@
+/************
+      *
+      *
+      *
+      *
+      * O D O
+
+  This file has gotten out of hand. It's pretty simple but could be split up. Some ideas:
+
+  - Split "sending info" and "recieving info" into separate ultility files.
+  - Lot of "marking as/confirming" might be able to be logically separated.
+  - Maybe have a more clever way to abstract props to make the render method slimmer.
+  - Some of the functional methods from the child stateless components are starting to leak up,
+    (e.g. showMenu) and I feel that they don't belong in this component. maybe another layer
+    of abstraction is needed?
+  - websockets as a whole can definitely be abstracted out of here, even if the first point is not valid
+                                                              
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import React , { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -24,6 +71,9 @@ class Chat extends Component {
 
     this.updateTyping = this.updateTyping.bind(this);
     this.handleReciept = this.handleReciept.bind(this);
+    this.goIncognito = this.goIncognito.bind(this);
+    this.showMenu = this.showMenu.bind(this);
+    this.hideMenu = this.hideMenu.bind(this);
   }
 
 
@@ -383,11 +433,21 @@ class Chat extends Component {
     }));
   }
 
+  showMenu() {
+    this.setState({showMenu: true});
+  }
+
+  hideMenu() {
+    this.setState({showMenu: false});
+  }
+
+  goIncognito() {
+    this.setState({incognito: true, showMenu: false});
+  }
+
   render() {
 
-    let disguise = true;//localStorage.getItem('id') === '5b1709363fe5234fbfdfceae';
-
-    if (disguise) {
+    if (this.state.incognito) {
       return (
         <div>
           <Spreadsheet
@@ -406,6 +466,10 @@ class Chat extends Component {
         <RoomHeader
           room={this.state.room}
           user={this.state.user}
+          showMenu={this.showMenu}
+          hideMenu={this.hideMenu}
+          show={this.state.showMenu}
+          goIncognito={this.goIncognito}
           typing={this.state.isTyping}
           currentlyTyping={this.state.currentlyTyping} />
         <MessageList

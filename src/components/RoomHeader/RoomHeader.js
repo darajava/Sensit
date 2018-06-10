@@ -3,6 +3,7 @@ import moment from 'moment'
 
 import { Link } from 'react-router-dom';
 import CSSModules from 'react-css-modules';
+import Menu from '../Menu/Menu';
 import styles from './styles.css';
 import Glyphicon from 'react-bootstrap/lib/Glyphicon'
 
@@ -50,12 +51,12 @@ const RoomHeader = (props) => {
           <Link to={{ pathname: "/", }} >
             <span styleName='glyph'>
               <Glyphicon glyph="menu-left" />
-            </span>
+            </span>  
             <span>
             <img styleName='profile-image' src={image} />
-              {onlineLight}
+              {onlineLight}    
             </span>
-          </Link>
+          </Link> 
         </div>
         
         <div styleName="user-info">
@@ -67,7 +68,29 @@ const RoomHeader = (props) => {
           </div>
         </div>
 
-        <span styleName="options">
+        <span styleName="options" onClick={props.showMenu}>
+          <Menu
+            hideMenu={props.hideMenu}
+            show={props.show}
+            options={[
+              {
+                f: () => alert('not implemented'),
+                text: "View group info"
+              },
+              {
+                f: () => alert('not implemented'),
+                text: "Mute"
+              },
+              {
+                f: props.goIncognito,
+                text: "Go incognito"
+              },
+              {
+                f: () => document.location = '/login',
+                text: "Log out"
+              },
+
+            ]} />
           <Glyphicon glyph="option-vertical" />
         </span>
       </div>

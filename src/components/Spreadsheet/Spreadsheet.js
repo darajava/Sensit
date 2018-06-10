@@ -12,7 +12,7 @@ import {isDelivered, isSeen} from '../../messageUtils';
 export default class Spreadsheet extends React.Component {
 
   constructor (props) {
-    super(props)
+    super(props);
 
     this.state = {
       grid: this.generateBlankGrid(),
@@ -75,7 +75,12 @@ export default class Spreadsheet extends React.Component {
     this.setState({
       grid: this.updateGrid(nextProps.messages),
     });
+  }
 
+  componentDidMount() {
+    this.setState({
+      grid: this.updateGrid(this.props.messages),
+    });
   }
 
   updateGrid(messages) {
