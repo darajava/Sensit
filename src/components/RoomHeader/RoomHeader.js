@@ -61,7 +61,6 @@ const RoomHeader = (props) => {
         <div styleName="user-info">
           <div styleName="username">
             {props.user ? props.user.username : props.room.name}
-            - myuser: {JSON.parse(localStorage.getItem('user')).username}
           </div>
           <div styleName="last-online">
             { dateString }
