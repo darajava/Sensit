@@ -128,3 +128,12 @@
   top: 1px;
 
 }
+
+.username-hint {
+  font-size: 12px;
+  font-weight: bold;
+  color: #6ba2d2;
+  width: auto;
+  margin-bottom: 10px;
+  display: inline-block;
+}

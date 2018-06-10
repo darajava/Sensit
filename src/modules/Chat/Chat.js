@@ -44,6 +44,7 @@ class Chat extends Component {
 
     this.state = {
       messages: [],
+      currentlyTyping: [],
       loadingMessages: true,
       users: props.location.query.users,
       user: props.location.query.user,
@@ -109,11 +110,38 @@ class Chat extends Component {
           break;
         case 'typing':
           if (parsedMessage.data) {
-            this.setState({isTyping: parsedMessage.data.typing});
+            let whoTyping;
 
-            clearTimeout(this.typingTimeout);
+            let currentlyTyping = this.state.currentlyTyping;
 
-            this.typingTimeout = setTimeout(() => this.setState({isTyping: false}), 2000);
+            if (parsedMessage.data.typing) {
+              whoTyping = parsedMessage.data.username;
+              if (!currentlyTyping.includes(whoTyping)) {
+                currentlyTyping.push(whoTyping);
+              } else {
+                // If we 
+                clearTimeout(this.typingTimeout);
+              }
+            }
+
+            this.setState({
+              isTyping: parsedMessage.data.typing,
+              currentlyTyping,
+            });
+
+
+            this.typingTimeout = setTimeout(() => {
+              // Remove this user from the typing list
+              let index = this.state.currentlyTyping.indexOf(parsedMessage.data.username);
+              if (index !== -1) {
+                this.state.currentlyTyping.splice(index, 1)
+              }
+
+              this.setState({
+                isTyping: this.state.currentlyTyping.length > 0,
+                currentlyTyping: this.state.currentlyTyping
+              });
+            }, 2000);
           }
 
           break;
@@ -194,6 +222,7 @@ class Chat extends Component {
         createdAt: Date.now(),
         timestamp: Date.now(),
         deliveredTo: [],
+        username: JSON.parse(localStorage.getItem('user')).username,
         room: this.room,
         forUsers: this.state.users,
         sentBy: localStorage.getItem('id'),
@@ -206,7 +235,10 @@ class Chat extends Component {
 
       this.pushMessages(messages);
 
-      connection.send(JSON.stringify({ type: 'message', data: jsonMessage }));
+      connection.send(JSON.stringify({
+        type: 'message',
+        data: jsonMessage,
+      }));
   }
 
   getMessages(room) {
@@ -267,6 +299,8 @@ class Chat extends Component {
     for (let i = this.state.messages.length - 1; i >= 0; i--) {
       let message = this.state.messages[i];
 
+      console.error(message.seenBy);
+
       // If we haven't already marked this message as delivered to this client
       if (!message.seenBy.includes(localStorage.getItem('id'))) {
         fetch("http://" + process.env.REACT_APP_API_URL + "/message-seen", {
@@ -314,6 +348,7 @@ class Chat extends Component {
       let jsonMessage = {
         token: localStorage.getItem('token'),
         userId: localStorage.getItem('id'),
+        username: JSON.parse(localStorage.getItem('user')).username,
         timestamp: Date.now(),
         typing,
         room: this.room,
@@ -367,9 +402,20 @@ class Chat extends Component {
 
     return (
       <div styleName="background">
-        <RoomHeader room={this.state.room} user={this.state.user} typing={this.state.isTyping} />
-        <MessageList messages={this.state.messages} loading={this.state.loadingMessages}/>
-        <InputArea sendMessage={(msg) => this.sendMessage(msg)} typing={this.updateTyping} />
+        <RoomHeader
+          room={this.state.room}
+          user={this.state.user}
+          typing={this.state.isTyping}
+          currentlyTyping={this.state.currentlyTyping} />
+        <MessageList
+          isGroup={typeof this.state.room !== 'undefined'}
+          messages={this.state.messages}
+          loading={this.state.loadingMessages}
+        />
+        <InputArea
+          sendMessage={(msg) => this.sendMessage(msg)}
+          typing={this.updateTyping}
+        />
       </div>
     );
   }

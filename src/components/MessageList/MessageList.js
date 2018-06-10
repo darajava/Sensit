@@ -18,6 +18,8 @@ const MessageList = (props) => {
         <Message
           key={i}
           message={props.messages[i]}
+          isGroup={props.isGroup}
+          username={props.messages[i].sentByUsername ? props.messages[i].sentByUsername : 'dunno'}
           mine={props.messages[i].sentBy === localStorage.getItem('id')}
           isDelivered={isDelivered(props.messages[i])}
           isSeen={isSeen(props.messages[i])}

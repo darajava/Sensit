@@ -33,6 +33,13 @@ const RoomHeader = (props) => {
     onlineLight = <span styleName={isOnline ? 'online-light' : 'offline-light'}/>;
     image = props.user.image ? props.user.image : 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'
   } else {
+    if (props.typing) {
+      if (props.currentlyTyping.length === 1) {
+        dateString = props.currentlyTyping[0] + ' is typing...';
+      } else {
+        dateString = 'Several people are typing';
+      }
+    }
     image = props.room.image ? props.room.image : 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'
   }
 
