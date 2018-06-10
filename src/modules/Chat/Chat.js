@@ -12,13 +12,15 @@ import RoomHeader from '../../components/RoomHeader/RoomHeader';
 import styles from './styles.css';
 
 const history = createHistory();
-let connection;
+let connection, checkOnlineInterval;
 
 class Chat extends Component {
   constructor(props) {
     super(props);
 
     this.typingTimeout = null;
+    this.room = props.match.params.id;
+    console.log(this.room);
 
     this.updateTyping = this.updateTyping.bind(this);
     this.handleReciept = this.handleReciept.bind(this);
@@ -27,31 +29,35 @@ class Chat extends Component {
 
   componentWillMount() {
     let props = this.props;
+    console.log(this.room);
+
     // If we don't get props (i.e. hot reload or page reload)
     // Then get them from localstorage
     if (typeof props.location.query === 'undefined') {
-      props.location.query = JSON.parse(localStorage.getItem('chatInfo' + props.match.params.id));
-      console.log(props.location.query);
+      props.location.query = JSON.parse(localStorage.getItem('chatInfo' + this.room));
     } else {
       // otherwise save them to localstorage
-      localStorage.setItem('chatInfo' + props.match.params.id, JSON.stringify(props.location.query));
+      localStorage.setItem('chatInfo' + this.room, JSON.stringify(props.location.query));
     }
+
+    console.error(props.location.query);
 
     this.state = {
       messages: [],
       loadingMessages: true,
       users: props.location.query.users,
       user: props.location.query.user,
+      room: props.location.query.room,
     };
 
     let myId = localStorage.getItem('id');
 
     let users = encodeURIComponent(JSON.stringify(props.location.query.users));
 
-    this.getMessages(props.match.params.id);
+    this.getMessages(this.room);
 
     connection = new WebSocket(
-      'ws://' + process.env.REACT_APP_CHAT_URL + '?room=' + props.match.params.id +
+      'ws://' + process.env.REACT_APP_CHAT_URL + '?room=' + this.room +
       '&users=' + users +
       '&myId=' + myId
     );
@@ -82,7 +88,14 @@ class Chat extends Component {
         return;
       }
 
-      console.log(message);
+      // This will break any socket request that doesn't contain 'room'
+      // Update them rather than move this
+      console.log('lll' + JSON.stringify(parsedMessage));
+      console.log('lll' + this.room);
+      if (parsedMessage.data.room !== this.room) {
+        console.log('in here')
+        return;
+      }
 
       switch (parsedMessage.type) {
         case 'deliver-reciept':
@@ -95,8 +108,6 @@ class Chat extends Component {
 
           break;
         case 'typing':
-          console.log(parsedMessage);
-
           if (parsedMessage.data) {
             this.setState({isTyping: parsedMessage.data.typing});
 
@@ -107,8 +118,6 @@ class Chat extends Component {
 
           break;
         case 'message':
-          console.log(parsedMessage);
-
           if (parsedMessage.data) {
             this.markAsDelivered(parsedMessage.data);
 
@@ -134,8 +143,17 @@ class Chat extends Component {
     this.markAllAsSeen = this.markAllAsSeen.bind(this);
   }
 
+  componentWillUnmount() {
+    connection.close();
+    clearInterval(checkOnlineInterval);
+  }
+
   componentDidMount() {
-    setInterval(() => this.getLastOnline(this.state.user._id), 5000); // Check every 5s for new online status;
+    // if we are in a group chat, don't check for last online
+    if (this.state.user) {
+      // Check every 5s for new online status
+      checkOnlineInterval = setInterval(() => this.getLastOnline(this.state.user._id), 5000);
+    }
     document.getElementById('seen').addEventListener('click', this.markAllAsSeen);
   }
 
@@ -176,6 +194,7 @@ class Chat extends Component {
         createdAt: Date.now(),
         timestamp: Date.now(),
         deliveredTo: [],
+        room: this.room,
         forUsers: this.state.users,
         sentBy: localStorage.getItem('id'),
         fake: true, // This is when we fake the message on the frontend before delivery to the server
@@ -207,7 +226,6 @@ class Chat extends Component {
     .then( (response) => { 
        return response.json();
     }).then((json) => {
-      console.log('xxx', json);
       let messages = [];
       for (let key in json) {
         if (json.hasOwnProperty(key)) {
@@ -288,9 +306,7 @@ class Chat extends Component {
        return response.json();
     }).then((json) => {
       this.state.user.lastOnline = json.lastOnline;
-      this.setState(this.state.user);
-      console.log('user roomheader', json);
-      json.lastOnline;
+      this.setState({user: this.state.user});
     });
   }
 
@@ -300,6 +316,7 @@ class Chat extends Component {
         userId: localStorage.getItem('id'),
         timestamp: Date.now(),
         typing,
+        room: this.room,
       }
 
       connection.send(JSON.stringify({ type: 'typing', data: jsonMessage }));
@@ -310,6 +327,7 @@ class Chat extends Component {
     
     message.deliveredTo = localStorage.getItem('id');
     message.token = localStorage.getItem('token');
+    message.room = this.room;
     
     connection.send(JSON.stringify({
       type: 'delivered',
@@ -322,6 +340,7 @@ class Chat extends Component {
     
     message.seenBy = localStorage.getItem('id');
     message.token = localStorage.getItem('token');
+    message.room = this.room;
     
     connection.send(JSON.stringify({
       type: 'seen',
@@ -331,7 +350,7 @@ class Chat extends Component {
 
   render() {
 
-    let disguise = localStorage.getItem('id') === '5b1709363fe5234fbfdfceae';
+    let disguise = false;//localStorage.getItem('id') === '5b1709363fe5234fbfdfceae';
 
     if (disguise) {
       return (
@@ -348,7 +367,7 @@ class Chat extends Component {
 
     return (
       <div styleName="background">
-        <RoomHeader user={this.state.user} typing={this.state.isTyping} />
+        <RoomHeader room={this.state.room} user={this.state.user} typing={this.state.isTyping} />
         <MessageList messages={this.state.messages} loading={this.state.loadingMessages}/>
         <InputArea sendMessage={(msg) => this.sendMessage(msg)} typing={this.updateTyping} />
       </div>

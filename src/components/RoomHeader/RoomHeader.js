@@ -10,21 +10,32 @@ let hash = require('object-hash');
 
 const RoomHeader = (props) => {
 
-  let iscurrentDate = moment(props.user.lastOnline).isSame(new Date(), "day");
-  let isOnline = moment().diff(moment(props.user.lastOnline), 'minutes') < 1
+  let image = '';
+  let onlineLight = null;
+  let dateString = ''; 
 
-  let dateString; 
 
-  if (props.typing) {
-    dateString = 'typing...';
-  } else if (isOnline) {
-    dateString = 'online';
-  } else if (iscurrentDate) {
-    dateString = "last seen today at " + moment(props.user.lastOnline).format('h:mma');
+  if (typeof props.user !== 'undefined') {
+
+    let iscurrentDate = moment(props.user.lastOnline).isSame(new Date(), "day");
+    let isOnline = moment().diff(moment(props.user.lastOnline), 'minutes') < 1
+
+    if (props.typing) {
+      dateString = 'typing...';
+    } else if (isOnline) {
+      dateString = 'online';
+    } else if (iscurrentDate) {
+      dateString = "last seen today at " + moment(props.user.lastOnline).format('h:mma');
+    } else {
+      dateString = "last seen " + moment(props.user.lastOnline).format('DD/MM/YYYY h:mma');
+    }
+
+    onlineLight = <span styleName={isOnline ? 'online-light' : 'offline-light'}/>;
+    image = props.user.image ? props.user.image : 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'
   } else {
-    console.log(props.user.lastOnline)
-    dateString = "last seen " + moment(props.user.lastOnline).format('DD/MM/YYYY h:mma');
+    image = props.room.image ? props.room.image : 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'
   }
+
 
   return (
       <div styleName='chat-item'>
@@ -34,15 +45,16 @@ const RoomHeader = (props) => {
               <Glyphicon glyph="menu-left" />
             </span>
             <span>
-            <img styleName='profile-image' src={props.user.image ? props.user.image : 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png' } />
-              <span styleName={isOnline ? 'online-light' : 'offline-light'}/>
+            <img styleName='profile-image' src={image} />
+              {onlineLight}
             </span>
           </Link>
         </div>
         
         <div styleName="user-info">
           <div styleName="username">
-            {props.user.username}
+            {props.user ? props.user.username : props.room.name}
+            - myuser: {JSON.parse(localStorage.getItem('user')).username}
           </div>
           <div styleName="last-online">
             { dateString }

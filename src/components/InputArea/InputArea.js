@@ -15,7 +15,6 @@ const InputArea = (props) => {
     } else {
       if (e.key.length == 1) {
         props.typing(true);
-        console.log(e.key.length);
       }
     }
   };

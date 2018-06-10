@@ -45,6 +45,7 @@ class Login extends Component {
           localStorage.setItem('token', json.token);
           // Save logged in user's ID
           localStorage.setItem('id', json.id);
+          localStorage.setItem('user', JSON.stringify(json.user));
 
           this.setState({ loading: true })
 

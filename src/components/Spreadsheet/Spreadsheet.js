@@ -7,6 +7,7 @@ import ReactDatasheet from 'react-datasheet';
 import {decode} from '../Message/Message';
 import SpreadsheetHeader from '../SpreadsheetHeader/SpreadsheetHeader';
 import moment from 'moment'
+import {isDelivered, isSeen} from '../../messageUtils';
 
 export default class Spreadsheet extends React.Component {
 
@@ -19,8 +20,8 @@ export default class Spreadsheet extends React.Component {
 
     this.numMessages = 15;
 
-    this.replyX = 3 + this.numMessages;
-    this.replyY = 3;
+    this.replyY = 3 + this.numMessages;
+    this.replyX = 4;
 
     this.updateGrid = this.updateGrid.bind(this);
     this.onSelected = this.onSelected.bind(this);
@@ -53,8 +54,6 @@ export default class Spreadsheet extends React.Component {
 
 
   componentWillReceiveProps(nextProps) {
-    if (JSON.stringify(nextProps.messages) === JSON.stringify(this.props.messages))
-      return;
     this.setState({
       grid: this.updateGrid(nextProps.messages),
     });
@@ -67,29 +66,48 @@ export default class Spreadsheet extends React.Component {
 
     let x, y = this.numMessages + 1;
     
-    this.state.grid[1][3].value = "You";
-    this.state.grid[1][2].value = this.props.user.username;
-    this.state.grid[1][1].value = "Time";
+    this.state.grid[1][this.replyX].value = "You";
+    this.state.grid[1][this.replyX - 1].value = this.props.user.username;
+    this.state.grid[1][this.replyX - 2].value = "Status";
+    this.state.grid[1][this.replyX - 3].value = "Time";
 
-    this.state.grid[this.replyX][this.replyY] = {
+    this.state.grid[this.replyY][this.replyX] = {
       value:  "Type reply...",
     }
 
     for (let i = messages.length - 1; i > messages.length - numMessages; i--) {
       if (!messages[i]) continue;
       if (messages[i].sentBy === localStorage.getItem('id')) {
-        x = 3;
-        this.state.grid[y][3].value = decode(messages[i].text);
-        this.state.grid[y--][1].value = moment(messages[i].createdAt).format('h:mm a');
+        this.state.grid[y][this.replyX].value = decode(messages[i].text);
       } else {
-        x = 2;
-        this.state.grid[y][2].value = decode(messages[i].text);
-        this.state.grid[y--][1].value = moment(messages[i].createdAt).format('h:mm a');
+        this.state.grid[y][this.replyX - 1].value = decode(messages[i].text);
       }
+
+      this.state.grid[y][this.replyX - 3].value = moment(messages[i].createdAt).format('h:mm a');
+      this.state.grid[y][this.replyX - 2].value = this.getStatus(messages[i]);
+      y--;
 
     }
 
     return this.state.grid;
+  }
+
+  getStatus(message) {
+    // If we didn't send it, but we're seeing it, it's always seen
+    // Isn't it? Maybe not in group chats
+    if (message.sentBy !== localStorage.getItem('id')) {
+      // return "Seen";
+    }
+
+    if (isSeen(message)) {
+      return "Seen";
+    } else if (isDelivered(message)) {
+      return "Delivered";
+    } else if (message.fake) {
+      return "Pending";
+    } else {
+      return "Sent";
+    }
   }
 
   onSelected(selected) {
@@ -110,12 +128,12 @@ export default class Spreadsheet extends React.Component {
 
             changes.forEach(({cell, row, col, value}) => {
               if (
-                row === this.replyX &&
-                col === this.replyY &&
-                grid[this.replyX][this.replyY].value !== value
+                row === this.replyY &&
+                col === this.replyX &&
+                grid[this.replyY][this.replyX].value !== value
               ) {
                 this.props.sendMessage(value); 
-                let selected = { start: { i: this.replyX, j: this.replyY}, end: { i: this.replyX, j: this.replyY } };
+                let selected = { start: { i: this.replyY, j: this.replyX}, end: { i: this.replyY, j: this.replyX } };
                 setTimeout(() => this.setState({selected}), 0);
               }
               grid[row][col] = {value};
@@ -123,7 +141,7 @@ export default class Spreadsheet extends React.Component {
             })
             this.setState({grid}, () => {
               window.scrollTo(0, 0);
-            })
+            });
           }}
         />
   

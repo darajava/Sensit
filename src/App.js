@@ -29,15 +29,7 @@ class App extends Component {
     let lastInteraction = Date.now();
 
     doc.onclick = () => {
-
-
-      console.log(Date.now())
-      console.log(lastInteraction)
-      console.log(Date.now() - lastInteraction);
-
       if (Date.now() - lastInteraction > 2000){
-        console.log('logging online time');
-
         fetch("http://" + process.env.REACT_APP_API_URL + "/last-online", {
           method: "POST",
 
@@ -61,10 +53,6 @@ class App extends Component {
         lastInteraction = Date.now();
       }
     };
-  }
-
-  componentWillMount(){
-
   }
 
   render() {

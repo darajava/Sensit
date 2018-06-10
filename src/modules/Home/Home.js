@@ -34,45 +34,55 @@ class Home extends Component {
     this.state = {
       users: [],
       usersLoaded: false,
+      rooms: [],
+      roomsLoaded: false,
       activeIndex: 1,
     }
 
-    this.getRecentUsers = this.getRecentUsers.bind(this);
+    this.getRecent = this.getRecent.bind(this);
     this.handleTabChange = this.handleTabChange.bind(this);
   }
 
   componentWillMount() {
-    this.getRecentUsers();
+    this.getRecent("users");
+    this.getRecent("rooms");
   }
 
-  getRecentUsers() {
+  // Todo: This doesn't yet get them in order of last message delivered
+  // fox on server
+  getRecent(type) {
     this.setState({usersLoaded: false});
 
-    fetch("http://" + process.env.REACT_APP_API_URL + "/users", {
+    fetch("http://" + process.env.REACT_APP_API_URL + "/" + type, {
       method: "POST",
 
       headers: {
         "Content-Type": "application/json",
         "Authorization": "Bearer " + localStorage.getItem('token'),
       },
+
+      body: JSON.stringify({
+        userId: localStorage.getItem('id'),
+      }),
     })
     .then( (response) => { 
+      console.log(response);
        return response.json();
     }).then((json) => {
-      let users = [];
+      let results = [];
       for (let key in json) {
         if (json.hasOwnProperty(key)) {
-          console.log(json[key]);
-          console.log(localStorage.getItem('id'))
           if (json[key]._id !== localStorage.getItem('id')) {
-            users.push(json[key]);            
+            results.push(json[key]);            
           }
         }
       }
 
-      console.log('users', users);
-
-      this.setState({users, usersLoaded: true});
+      if (type === "users") {
+        this.setState({users: results, usersLoaded: true});
+      } else if (type === "rooms") {
+        this.setState({rooms: results, roomsLoaded: true});
+      }
       // // If we have this, then we should be logged in
       // localStorage.setItem('token', json.token);
     });
@@ -98,7 +108,15 @@ class Home extends Component {
         </div>;
     }
 
-      console.log(this.state);
+
+    let rooms = [];
+    for (let i = 0; i < this.state.rooms.length; i++) {
+      rooms[i] =
+        <div key={i}>
+          <ChatItem room={this.state.rooms[i]} />
+        </div>;
+    }
+
     return (
       <div>
         <HomeHeader />
@@ -109,8 +127,8 @@ class Home extends Component {
             {this.state.usersLoaded && users}
           </Tab>
           <Tab value={2} style={ this.getStyle(this.state.activeIndex === 2) } label="Contacts" >
-            {!this.state.usersLoaded && <Loading />}
-            {this.state.usersLoaded && users}
+            {!this.state.roomsLoaded && <Loading />}
+            {this.state.roomsLoaded && rooms}
           </Tab>
           <Tab value={3} style={ this.getStyle(this.state.activeIndex === 3) } label="Groups" >
             {!this.state.usersLoaded && <Loading />}
