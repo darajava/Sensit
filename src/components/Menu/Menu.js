@@ -22,7 +22,7 @@ const Menu = (props) => {
   }
 
   document.body.onclick = (e) => {
-    if (e.srcElement.parentElement.id !== 'menu-list') {
+    if (e.srcElement && e.srcElement.parentElement.id !== 'menu-list') {
       document.getElementById('menu-list') && (document.getElementById('menu-list').className += " " + styles['fade-out']);
       props.hideMenu();
     }
