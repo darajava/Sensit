@@ -27,10 +27,11 @@ const Login = (props) => {
           Login
         </button>
 
-        <Link to='/register'>Don't have an account? Register here</Link>
       </div>
     </div>
   )
+
+  // <Link to='/register'>Don't have an account? Register here</Link>
 }
 
 export default CSSModules(Login, styles);

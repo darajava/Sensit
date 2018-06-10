@@ -22,8 +22,15 @@ export default class Spreadsheet extends React.Component {
 
     this.replyY = 3 + this.numMessages;
     this.replyX = 4;
+    this.offset = 0;
+
+    if (this.props.room) {
+      this.replyX++;
+      this.offset = -1;
+    }
 
     this.updateGrid = this.updateGrid.bind(this);
+    this.blankMessageSection = this.blankMessageSection.bind(this);
     this.onSelected = this.onSelected.bind(this);
   }
 
@@ -52,6 +59,17 @@ export default class Spreadsheet extends React.Component {
     return allRows;
   }
 
+  blankMessageSection(grid) {
+    
+    for (let y = 1; y <= this.replyY; y++) {
+      for (let x = 1; x < 5 - this.offset; x++) {
+        grid[y][x] = {value: ''}
+      }
+    }
+
+    return grid;
+  }
+
 
   componentWillReceiveProps(nextProps) {
     this.setState({
@@ -61,15 +79,18 @@ export default class Spreadsheet extends React.Component {
   }
 
   updateGrid(messages) {
-    this.state.grid = this.generateBlankGrid();
+    this.state.grid = this.blankMessageSection(this.state.grid);
     let numMessages = this.numMessages;
 
     let x, y = this.numMessages + 1;
     
     this.state.grid[1][this.replyX].value = "You";
-    this.state.grid[1][this.replyX - 1].value = this.props.user.username;
-    this.state.grid[1][this.replyX - 2].value = "Status";
-    this.state.grid[1][this.replyX - 3].value = "Time";
+    this.state.grid[1][this.replyX - 1].value = this.props.user ? this.props.user.username : this.props.room.name;
+    if (this.props.room) {
+      this.state.grid[1][this.replyX - 2].value = "Sent by";
+    }
+    this.state.grid[1][this.replyX - 2 + this.offset].value = "Status";
+    this.state.grid[1][this.replyX - 3 + this.offset].value = "Time";
 
     this.state.grid[this.replyY][this.replyX] = {
       value:  "Type reply...",
@@ -77,14 +98,19 @@ export default class Spreadsheet extends React.Component {
 
     for (let i = messages.length - 1; i > messages.length - numMessages; i--) {
       if (!messages[i]) continue;
+      console.log(messages[i])
       if (messages[i].sentBy === localStorage.getItem('id')) {
         this.state.grid[y][this.replyX].value = decode(messages[i].text);
       } else {
         this.state.grid[y][this.replyX - 1].value = decode(messages[i].text);
       }
 
-      this.state.grid[y][this.replyX - 3].value = moment(messages[i].createdAt).format('h:mm a');
-      this.state.grid[y][this.replyX - 2].value = this.getStatus(messages[i]);
+      if (this.props.room) {
+        this.state.grid[y][this.replyX - 2].value = messages[i].sentByUsername;
+      }
+
+      this.state.grid[y][this.replyX - 2 + this.offset].value = this.getStatus(messages[i]);
+      this.state.grid[y][this.replyX - 3 + this.offset].value = moment(messages[i].createdAt).format('h:mm a');
       y--;
 
     }

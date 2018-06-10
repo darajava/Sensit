@@ -385,7 +385,7 @@ class Chat extends Component {
 
   render() {
 
-    let disguise = false;//localStorage.getItem('id') === '5b1709363fe5234fbfdfceae';
+    let disguise = true;//localStorage.getItem('id') === '5b1709363fe5234fbfdfceae';
 
     if (disguise) {
       return (
@@ -393,6 +393,7 @@ class Chat extends Component {
           <Spreadsheet
             messages={this.state.messages}
             user={this.state.user}
+            room={this.state.room}
             sendMessage={(msg) => this.sendMessage(msg)}
             typing={this.updateTyping}
           />

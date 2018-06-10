@@ -432,8 +432,8 @@ span.data-grid-container,span.data-grid-container:focus{
     height: 100%;
     width: 100%;
     white-space: nowrap;
-    padding-left: 3px;
-    padding-right: 3px;
+    padding-left: 7px;
+    padding-right: 7px;
 }
 .custom-sheet{
     -webkit-box-sizing:border-box;
