@@ -395,16 +395,16 @@ class Chat extends Component {
   }
 
   updateTyping(typing) {  
-      let jsonMessage = {
-        token: localStorage.getItem('token'),
-        userId: localStorage.getItem('id'),
-        username: JSON.parse(localStorage.getItem('user')).username,
-        timestamp: Date.now(),
-        typing,
-        room: this.room,
-      }
+    let jsonMessage = {
+      token: localStorage.getItem('token'),
+      userId: localStorage.getItem('id'),
+      username: JSON.parse(localStorage.getItem('user')).username,
+      timestamp: Date.now(),
+      typing,
+      room: this.room,
+    }
 
-      connection.send(JSON.stringify({ type: 'typing', data: jsonMessage }));
+    connection.send(JSON.stringify({ type: 'typing', data: jsonMessage }));
   }
 
   sendDeliveredMessage(message) {
