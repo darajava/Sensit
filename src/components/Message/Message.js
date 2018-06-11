@@ -5,19 +5,34 @@ import CSSModules from 'react-css-modules';
 import styles from './styles.css';
 import Glyphicon from 'react-bootstrap/lib/Glyphicon'
 
+let returnRich = (text) => {
+  var bold = /\*(\S([^*.]*?\S)?)\*/gm;
+  var html = text.replace(bold, '<strong>$1</strong>');  
+  
+  var italic = /_(\S([^*.]*?\S)?)_/gm;
+  var html = html.replace(italic, '<i>$1</i>');  
+  
+  var blink = /\^(\S([^*.]*?\S)?)\^/gm;
+  var html = html.replace(blink, '<blink class="blink-text">$1</blink>');         
+    
+  return (
+    <span dangerouslySetInnerHTML={{__html: html}} />
+  )
+
+}
+
 export function decode(html) {
   let text = document.createElement('textarea');
   text.innerHTML = html;
 
   let value = text.value;
 
+
+
   let bold = /\*(.*)\*/;
   let italic = /_(.*)_/;
 
-  // TODO lol get bold working... it's possible but will take some thinking
-  // value = value.replace(bold, <b>{'$1'}</b>).replace(italic, '<i>$1</i>')
-
-  return value;
+  return returnRich(value);
 }
 
 function changeColor(col, amt) {

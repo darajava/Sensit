@@ -40,6 +40,12 @@ const ChatItem = (props) => {
         <div styleName='chat-item'>
           <img styleName='profile-image' src={props.room.image ? props.room.image : 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png' } />
           {props.room.name}
+          <div>
+            {props.room.lastMessage}
+          </div>
+          <div>
+            {props.room.lastMessageTime}
+          </div>
         </div>
       </Link>
     );
