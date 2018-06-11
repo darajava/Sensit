@@ -710,3 +710,6 @@ close, but not there
   100% { opacity: 1.0; }
 }
 
+iframe {
+    border: 0;
+}
