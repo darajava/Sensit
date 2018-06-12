@@ -1,0 +1,14 @@
+.container {
+  display: inline-block;
+  border-bottom: 1px solid #ddd;
+  height: 80px;
+  width: 100%;
+  background: white;
+}
+
+
+.container:hover {
+  background-color: #f0fff0;
+  transition: background-color 0.3s;
+  cursor: pointer;
+}
