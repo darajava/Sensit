@@ -39,15 +39,15 @@ const ChatItem = (props) => {
       }>
         <div styleName='chat-item'>
           <img styleName='profile-image' src={props.room.image ? props.room.image : 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png' } />
-          <div>
+          <span styleName="room">
             {props.room.name}
-          </div>
-          <div>
+          </span>
+          <span styleName="last-message">
             {props.room.lastMessage}
-          </div>
-          <div>
-            {props.room.lastMessageTime}
-          </div>
+          </span>
+          <span styleName="time">
+            {moment(props.room.lastMessageTime).format('h:mm a')}
+          </span>
         </div>
       </Link>
     );
@@ -61,7 +61,9 @@ const ChatItem = (props) => {
       }>
         <div styleName='chat-item'>
           <img styleName='profile-image' src={props.user.image ? props.user.image : 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png' } />
-          {props.user.username}
+          <span styleName="room">
+            {props.user.username}
+          </span>
         </div>
       </Link>
     );

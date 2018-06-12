@@ -6,9 +6,35 @@
   background: white;
 }
 
+.chat-item:hover {
+  background-color: #f4f4f4;
+  transition: background-color 0.3s;
+  cursor: pointer;
+}
+
 .profile-image {
   border-radius: 50%;
   width: 50px;
   height: 50px;
   margin: 15px;
+}
+
+.chat-item span {
+  padding: 15px;
+}
+
+.chat-item .room {
+  color: #333;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.chat-item .last-message {
+  color: #ccc;
+  font-style: oblique;
+}
+
+.chat-item .time {
+  color: #aaa;
+  font-size: 10px;
 }
