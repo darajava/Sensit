@@ -35,7 +35,6 @@ class MainLayout extends Component {
                 </nav>
                 <Switch>
                   <PrivateRoute exact path='/' component={Home} isAuthenticated={() => localStorage.getItem('token')} />
-                  <PrivateRoute exact path='/chat/:id' component={Chat} isAuthenticated={() => localStorage.getItem('token')} />
                   <Route exact path='/login' component={Login} />
                   <Route exact path='/logout' component={Login} />
                   <Route exact path='/register' component={Register} />

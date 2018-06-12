@@ -13,7 +13,7 @@ import Logo from '../Logo/Logo';
 const HomeHeader = (props) => {
 
   return (
-      <div>
+      <div styleName="header">
         <Logo inline={true} />
       </div>
   );

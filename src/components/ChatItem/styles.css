@@ -1,13 +1,15 @@
 .chat-item {
   display: inline-block;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid #ddd;
   height: 80px;
   width: 100%;
   background: white;
+  display: flex;
+  align-items: center;
 }
 
 .chat-item:hover {
-  background-color: #f4f4f4;
+  background-color: #f0fff0;
   transition: background-color 0.3s;
   cursor: pointer;
 }
@@ -19,8 +21,9 @@
   margin: 15px;
 }
 
-.chat-item span {
-  padding: 15px;
+.content-holder {
+  width: calc(100% - 80px);
+  display: inline-block;
 }
 
 .chat-item .room {
@@ -32,9 +35,15 @@
 .chat-item .last-message {
   color: #ccc;
   font-style: oblique;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 90%;
+  overflow: hidden;
 }
 
 .chat-item .time {
   color: #aaa;
   font-size: 10px;
+  float: right;
+  padding-right: 15px;
 }

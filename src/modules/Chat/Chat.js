@@ -66,8 +66,8 @@ class Chat extends Component {
     super(props);
 
     this.typingTimeout = null;
-    this.room = props.match.params.id;
-    console.log(this.room);
+    this.room = props.roomId;
+    console.log(this.props, 'sss');
 
     this.updateTyping = this.updateTyping.bind(this);
     this.handleReciept = this.handleReciept.bind(this);
@@ -83,27 +83,27 @@ class Chat extends Component {
 
     // If we don't get props (i.e. hot reload or page reload)
     // Then get them from localstorage
-    if (typeof props.location.query === 'undefined') {
-      props.location.query = JSON.parse(localStorage.getItem('chatInfo' + this.room));
-    } else {
-      // otherwise save them to localstorage
-      localStorage.setItem('chatInfo' + this.room, JSON.stringify(props.location.query));
-    }
+    // if (typeof props.location.query === 'undefined') {
+    //   props.roomId = JSON.parse(localStorage.getItem('chatInfo' + this.room));
+    // } else {
+    //   // otherwise save them to localstorage
+    //   localStorage.setItem('chatInfo' + this.room, JSON.stringify(props.roomId));
+    // }
 
-    console.error(props.location.query);
+    // console.error(props.location.query);
 
     this.state = {
       messages: [],
       currentlyTyping: [],
       loadingMessages: true,
-      users: props.location.query.users,
-      user: props.location.query.user,
-      room: props.location.query.room,
+      users: props.users,
+      user: props.user,
+      room: props.room,
     };
 
     let myId = localStorage.getItem('id');
 
-    let users = encodeURIComponent(JSON.stringify(props.location.query.users));
+    let users = encodeURIComponent(JSON.stringify(props.users));
 
     this.getMessages(this.room);
 
@@ -461,14 +461,16 @@ class Chat extends Component {
       )
     }
 
+    console.log('dddd', this.state.room);
+
     return (
       <div styleName="background">
         <RoomHeader
           room={this.state.room}
           user={this.state.user}
-          showMenu={this.showMenu}
-          hideMenu={this.hideMenu}
-          show={this.state.showMenu}
+          showMenu={this.showMenu}  //
+          hideMenu={this.hideMenu}   //
+          show={this.state.showMenu}  // bad code
           goIncognito={this.goIncognito}
           typing={this.state.isTyping}
           currentlyTyping={this.state.currentlyTyping} />

@@ -1,4 +1,9 @@
 .background {
   background-image: url(../../background.jpeg);
   height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 347px;
+  width: calc(100vw - 347px);
+  
 }
