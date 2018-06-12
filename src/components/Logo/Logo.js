@@ -8,7 +8,7 @@ const Logo = (props) => {
   return (
     <div styleName={!props.inline ? (props.login ? "login" : "center") : 'inline'}>
       <div styleName="logo">
-        WhatsApp... eh I mean <span styleName="sens">Sens</span><span styleName="it">it</span>
+        <span styleName="sens">Sens</span><span styleName="it">it</span>
       </div>
     </div>
   )

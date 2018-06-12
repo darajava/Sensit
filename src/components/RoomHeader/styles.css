@@ -2,12 +2,13 @@
   display: inline-block;
   height: 53px;
   width: 100%;
-  background: #37babd;
+  background: #37babdd5;
   font-weight: bold;
   padding: 10px;
   color: white;
   box-shadow: 0 8px 6px -6px #ccc;
   font-size: 16px;
+  position: fixed;
 }
 
 .back-button {
