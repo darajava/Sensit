@@ -9,19 +9,20 @@
   display: block;
   border-radius: 6px;
   max-width: 70%;
-  margin: 5px 10px;
+  margin: 5px 20px;
   width: auto;
   font-size: 14px;
   float: left;
   word-break: break-word;
   padding: 10px 15px 7px 14px;
+  color: #4e4e4e;
 }
 
 .my-message {
   composes: message;
 
   float: right;
-  background-color: #c1e7e8;
+  background-color: #e4e4e4;
   color: #444;
   
   border-right: 1px solid #c7c7c7;
@@ -67,13 +68,14 @@
   position: relative;
   top: 8px;
   left: 16px;
+  filter: saturate(0);
 }
 
 .seen-image {
   width: 16px;
   height: 16px;
   display: inline-block;
-
+  filter: saturate(1);
 }
 
 .fade-out {
@@ -113,10 +115,10 @@
 
 .delivered-icon {
   color: white;
-  background-color: #37babd;
+  background-color: #d6ecf7f0;
   border-radius: 50%;
   padding: 1px;
-  opacity: 0.7;
+  opacity: 1;
   /*border: 2px solid white;*/
 
 }

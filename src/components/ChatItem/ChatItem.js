@@ -34,7 +34,7 @@ const ChatItem = (props) => {
 
     clickHandler = () => props.selectChat(props.room._id, props.room.users, undefined, props.room);
 
-    imageUrl = props.room.image ? props.room.image : 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png';
+    imageUrl = props.room.image ? props.room.image : 'https://api.adorable.io/avatars/100/' + props.room._id + '.png';
     roomName = props.room.name;
     lastMessage = props.room.lastMessage;
     time = moment(props.room.lastMessageTime).format('h:mm a');
@@ -48,7 +48,7 @@ const ChatItem = (props) => {
     }
     imageUrl = props.user.image
       ? props.user.image
-      : 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png';
+      : 'https://api.adorable.io/avatars/100/' + props.user._id + '.png';
       roomName = props.user.username;
   }
 

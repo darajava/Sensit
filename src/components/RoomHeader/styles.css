@@ -1,52 +1,53 @@
 .chat-item {
   display: inline-block;
-  height: 53px;
+  height: 69px;
   width: 100%;
-  background: #37babdd5;
+  background: #d6ecf7f0;
   font-weight: bold;
-  padding: 10px;
+  z-index: 1;
+  padding: 14px 14px;
   color: white;
-  box-shadow: 1px 4px 7px -2px #4242425c;
+  box-shadow: 0px 3px 2px -2px #42424240;
   font-size: 16px;
   position: fixed;
+  border-left: 1px solid #c9daff;
 }
 
 .back-button {
   display: inline-block;
-  width: 70px;
   float: left;
 }
 
 .glyph {
   position: relative;
   top: 1px;
-  color: white;
+  color: #8c8c8c;
 }
 
 .user-info {
   display: inline-block;
-  position: relative;
-  top: -3px;
 }
 
 .username {
   position: relative;
   top: 2px;
+  color: #565656;
 }
 
 .last-online {
   font-size: 11px;
-  color: #BAEBEB;
+  color: #7b7d7d;
   display: block;
   font-weight: normal;
 }
 
 .profile-image {
   border-radius: 50%;
-  width: 33px;
-  height: 33px;
+  width: 40px;
+  height: 40px;
   margin-left: 6px;
   margin-right: 14px;
+  border: 1px solid #ccc;
 }
 
 .options {
@@ -70,8 +71,8 @@
   display: inline-block;
   border: 2px solid white;
   position: relative;
-  top: -17px;
-  left: 45px;
+  top: 20px;
+  left: -22px;
 }
 
 

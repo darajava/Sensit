@@ -32,7 +32,7 @@ const RoomHeader = (props) => {
     }
 
     onlineLight = <span styleName={isOnline ? 'online-light' : 'offline-light'}/>;
-    image = props.user.image ? props.user.image : 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'
+    image = props.user.image ? props.user.image : 'https://api.adorable.io/avatars/100/' + props.user._id + '.png'
   } else {
     if (props.typing) {
       if (props.currentlyTyping.length === 1) {
@@ -41,7 +41,7 @@ const RoomHeader = (props) => {
         dateString = 'Several people are typing';
       }
     }
-    image = props.room.image ? props.room.image : 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'
+    image = props.room.image ? props.room.image : 'https://api.adorable.io/avatars/100/' + props.room._id + '.png'
   }
 
 

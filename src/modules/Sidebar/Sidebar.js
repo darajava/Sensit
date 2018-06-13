@@ -14,14 +14,14 @@ import HomeHeader from '../../components/HomeHeader/HomeHeader';
 
 let tabStyle = {
   default_tab:{
-    color: 'rgba(255, 255, 255, 0.6)',
-    backgroundColor: '#6ac4c6',
+    color: '#676767',
+    backgroundColor: '#f1f1f1',
     fontWeight: 900,
     fontSize: 12,
   },
   active_tab:{
-    color: '#fff',
-    backgroundColor: '#6cc7ca',
+    color: '#676767',
+    backgroundColor: '#d8edf7',
     fontWeight: 900,
     fontSize: 12,
   }
