@@ -6,6 +6,7 @@ import CSSModules from 'react-css-modules';
 import Menu from '../Menu/Menu';
 import styles from './styles.css';
 import Glyphicon from 'react-bootstrap/lib/Glyphicon'
+import {stringToIntHash} from '../../utils/utils';
 
 let hash = require('object-hash');
 
@@ -32,7 +33,7 @@ const RoomHeader = (props) => {
     }
 
     onlineLight = <span styleName={isOnline ? 'online-light' : 'offline-light'}/>;
-    image = props.user.image ? props.user.image : 'https://api.adorable.io/avatars/100/' + props.user._id + '.png'
+    image = props.user.image ? props.user.image : 'https://picsum.photos/' + stringToIntHash(props.user._id);
   } else {
     if (props.typing) {
       if (props.currentlyTyping.length === 1) {
@@ -41,7 +42,7 @@ const RoomHeader = (props) => {
         dateString = 'Several people are typing';
       }
     }
-    image = props.room.image ? props.room.image : 'https://api.adorable.io/avatars/100/' + props.room._id + '.png'
+    image = props.room.image ? props.room.image : 'https://picsum.photos/' + stringToIntHash(props.room._id);
   }
 
 

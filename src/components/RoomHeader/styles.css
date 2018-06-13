@@ -1,7 +1,7 @@
 .chat-item {
   display: inline-block;
   height: 69px;
-  width: 100%;
+  width: calc(100vw - 347px);
   background: #d6ecf7f0;
   font-weight: bold;
   z-index: 1;
@@ -48,6 +48,7 @@
   margin-left: 6px;
   margin-right: 14px;
   border: 1px solid #ccc;
+  filter: sepia(0.3);
 }
 
 .options {
@@ -71,8 +72,8 @@
   display: inline-block;
   border: 2px solid white;
   position: relative;
-  top: 20px;
-  left: -22px;
+  top: 15px;
+  left: -24px;
 }
 
 

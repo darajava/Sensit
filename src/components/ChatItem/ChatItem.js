@@ -6,6 +6,7 @@ import CSSModules from 'react-css-modules';
 import styles from './styles.css';
 import Glyphicon from 'react-bootstrap/lib/Glyphicon'
 import {withRouter} from "react-router-dom";
+import {stringToIntHash} from '../../utils/utils';
 
 let hash = require('object-hash');
 
@@ -34,7 +35,7 @@ const ChatItem = (props) => {
 
     clickHandler = () => props.selectChat(props.room._id, props.room.users, undefined, props.room);
 
-    imageUrl = props.room.image ? props.room.image : 'https://api.adorable.io/avatars/100/' + props.room._id + '.png';
+    imageUrl = props.room.image ? props.room.image : 'https://picsum.photos/' + stringToIntHash(props.room._id);
     roomName = props.room.name;
     lastMessage = props.room.lastMessage;
     time = moment(props.room.lastMessageTime).format('h:mm a');
@@ -48,7 +49,7 @@ const ChatItem = (props) => {
     }
     imageUrl = props.user.image
       ? props.user.image
-      : 'https://api.adorable.io/avatars/100/' + props.user._id + '.png';
+      : 'https://picsum.photos/' + stringToIntHash(hash([localStorage.getItem('id'), props.user._id].sort()));
       roomName = props.user.username;
   }
 
