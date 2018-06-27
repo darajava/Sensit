@@ -10,8 +10,6 @@ const MessageList = (props) => {
 
   let messageList = [];
 
-  console.error(props.messages);
-
   for (let i = 0; i < props.messages.length; i++) {
     if (props.messages[i]) {
       messageList.push(

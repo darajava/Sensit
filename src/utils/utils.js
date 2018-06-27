@@ -1,7 +1,7 @@
 export function stringToIntHash(str, upperbound, lowerbound) {
   let result = 0;
   for (let i = 0; i < str.length; i++) {
-    result = result + str.charCodeAt(i);
+    result = result + (str.charCodeAt(i) * 113);
   }
 
   if (!lowerbound) lowerbound = 100;

@@ -101,8 +101,6 @@ class Chat extends Component {
       room: props.room,
     };
 
-    let myId = localStorage.getItem('id');
-
     let users = encodeURIComponent(JSON.stringify(props.users));
 
     this.getMessages(this.room);
@@ -110,7 +108,7 @@ class Chat extends Component {
     connection = new WebSocket(
       'ws://' + process.env.REACT_APP_CHAT_URL + '?room=' + this.room +
       '&users=' + users +
-      '&myId=' + myId
+      '&myId=' + localStorage.getItem('id')
     );
 
     // if user is running mozilla then use its built-in WebSocket
@@ -134,8 +132,7 @@ class Chat extends Component {
       try {
         parsedMessage = JSON.parse(message.data);
       } catch (e) {
-        console.log('This doesn\'t look like valid JSON: ',
-            message.data);
+        console.log('This doesn\'t look like valid JSON: ', message.data);
         return;
       }
 
@@ -266,6 +263,8 @@ class Chat extends Component {
         return;
       }
       
+      this.props.sendUpdate();
+
       let jsonMessage = {
         token: localStorage.getItem('token'),
         text: message,

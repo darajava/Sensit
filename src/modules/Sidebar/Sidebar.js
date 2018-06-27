@@ -27,68 +27,24 @@ let tabStyle = {
   }
 }
 
+let connection;
+
 class Sidebar extends Component {
 
   constructor() {
     super();
 
-    this.state = {
-      chats: [],
-      chatsLoaded: false,
-      users: [],
-      usersLoaded: false,
-      rooms: [],
-      roomsLoaded: false,
-      activeIndex: 1,
-    }
+    // this.props = {
+    //   chats: [],
+    //   chatsLoaded: false,
+    //   users: [],
+    //   usersLoaded: false,
+    //   rooms: [],
+    //   roomsLoaded: false,
+    //   activeIndex: 1,
+    // }
 
-    this.getRecent = this.getRecent.bind(this);
     this.handleTabChange = this.handleTabChange.bind(this);
-  }
-
-  componentWillMount() {
-    this.getRecent("chats");
-    this.getRecent("users");
-    this.getRecent("rooms");
-  }
-
-  getRecent(type) {
-    this.setState({usersLoaded: false});
-
-    fetch("http://" + process.env.REACT_APP_API_URL + "/" + type, {
-      method: "POST",
-
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer " + localStorage.getItem('token'),
-      },
-
-      body: JSON.stringify({
-        userId: localStorage.getItem('id'),
-      }),
-    })
-    .then( (response) => { 
-      console.log(response);
-       return response.json();
-    }).then((json) => {
-      let results = [];
-      for (let key in json) {
-        if (json.hasOwnProperty(key)) {
-          results.push(json[key]);
-        }
-      }
-
-      if (type === "users") {
-        this.setState({users: results, usersLoaded: true});
-      } else if (type === "rooms") {
-        this.setState({rooms: results, roomsLoaded: true});
-      } else if (type === "chats") {
-        this.setState({chats: results, chatsLoaded: true});
-      }
-      // // If we have this, then we should be logged in
-      // localStorage.setItem('token', json.token);
-    });
-    // send the message as an ordinary text
   }
 
   handleTabChange (index) {
@@ -103,29 +59,29 @@ class Sidebar extends Component {
 
   render() {
     let chats = [];
-    for (let i = 0; i < this.state.chats.length; i++) {
+    for (let i = 0; i < this.props.chats.length; i++) {
       chats[i] =
         <div key={i}>
-          <ChatItem selectChat={this.props.selectChat} room={this.state.chats[i]} users={this.state.users} chat={true} />
+          <ChatItem selectChat={this.props.selectChat} room={this.props.chats[i]} users={this.props.users} chat={true} />
         </div>;
     }
 
     let users = [];
-    for (let i = 0; i < this.state.users.length; i++) {
-      if (this.state.users[i]._id !== localStorage.getItem('id')) {
+    for (let i = 0; i < this.props.users.length; i++) {
+      if (this.props.users[i]._id !== localStorage.getItem('id')) {
         users[i] = (
           <div key={i}>
-            <ChatItem selectChat={this.props.selectChat} user={this.state.users[i]} users={this.state.users}/>
+            <ChatItem selectChat={this.props.selectChat} user={this.props.users[i]} users={this.props.users}/>
           </div>
         );
       }
     }
 
     let rooms = [];
-    for (let i = 0; i < this.state.rooms.length; i++) {
+    for (let i = 0; i < this.props.rooms.length; i++) {
       rooms[i] =
         <div key={i}>
-          <ChatItem selectChat={this.props.selectChat} room={this.state.rooms[i]} users={this.state.users} group={true} />
+          <ChatItem selectChat={this.props.selectChat} room={this.props.rooms[i]} users={this.props.users} group={true} />
         </div>;
     }
 
@@ -134,15 +90,15 @@ class Sidebar extends Component {
         <HomeHeader />
 
         <Tabs inkBarStyle={{ backgroundColor: '#fff'}} tabItemContainerStyle={{ height:44 }} onChange={this.handleTabChange}>
-          <Tab value={1} style={ this.getStyle(this.state.activeIndex === 1) } label="Chats" >
-            {(this.state.chatsLoaded && this.state.usersLoaded) ? chats : <Loading />}
+          <Tab value={1} style={ this.getStyle(this.props.activeIndex === 1) } label="Chats" >
+            {(this.props.chatsLoaded && this.props.usersLoaded) ? chats : <Loading />}
           </Tab>
-          <Tab value={2} style={ this.getStyle(this.state.activeIndex === 2) } label="Contacts" >
-            {this.state.usersLoaded ? users : <Loading />}
+          <Tab value={2} style={ this.getStyle(this.props.activeIndex === 2) } label="Contacts" >
+            {this.props.usersLoaded ? users : <Loading />}
           </Tab>
-          <Tab value={3} style={ this.getStyle(this.state.activeIndex === 3) } label="Groups" >
-            {this.state.usersLoaded && <NewGroup users={this.state.users} />}
-            {(this.state.usersLoaded && this.state.roomsLoaded) ? rooms : <Loading />}
+          <Tab value={3} style={ this.getStyle(this.props.activeIndex === 3) } label="Groups" >
+            {this.props.usersLoaded && <NewGroup users={this.props.users} />}
+            {(this.props.usersLoaded && this.props.roomsLoaded) ? rooms : <Loading />}
           </Tab>
         </Tabs>
       </div>
