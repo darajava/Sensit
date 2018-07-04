@@ -43,7 +43,7 @@ function returnRich (text) {
 
 }
 
-export function decode(html) {
+export function decode(html, noYt) {
   let text = document.createElement('textarea');
   text.innerHTML = html;
 
@@ -53,7 +53,7 @@ export function decode(html) {
 
   let yt = hasYoutube(value);
 
-  if (yt.length) {
+  if (yt.length && !noYt) {
     return returnRich('<iframe width="420" height="315" src="https://www.youtube.com/embed/' + yt + '"></iframe>');
   }
 

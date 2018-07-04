@@ -69,7 +69,7 @@ const ChatItem = (props) => {
           </span>
         </div>
         <div styleName="last-message">
-          {lastMessage ? decode(lastMessage) : 'Status...'}
+          {lastMessage ? decode(lastMessage, true) : 'Status...'}
         </div>
       </div>
     </div>
