@@ -76,7 +76,7 @@ class Sidebar extends Component {
 
       console.log(user);
       chats[i] =
-        <div className="chat-group" key={i}>
+        <div key={i}>
           <ChatItem
             selectChat={this.props.selectChat}
             users={this.props.users}
@@ -91,7 +91,7 @@ class Sidebar extends Component {
     for (let i = 0; i < this.props.users.length; i++) {
       if (this.props.users[i]._id !== localStorage.getItem('id')) {
         users[i] = (
-          <div className="chat-group" key={i}>
+          <div key={i}>
             <ChatItem selectChat={this.props.selectChat} user={this.props.users[i]} users={this.props.users}/>
           </div>
         );
@@ -101,7 +101,7 @@ class Sidebar extends Component {
     let rooms = [];
     for (let i = 0; i < this.props.rooms.length; i++) {
       rooms[i] =
-        <div className="chat-group" key={i}>
+        <div key={i}>
           <ChatItem selectChat={this.props.selectChat} room={this.props.rooms[i]} users={this.props.users} group={true} />
         </div>;
     }
@@ -112,14 +112,14 @@ class Sidebar extends Component {
 
         <Tabs inkBarStyle={{ backgroundColor: '#fff'}} tabItemContainerStyle={{ height:44 }} onChange={this.handleTabChange}>
           <Tab value={1} style={ this.getStyle(this.state.activeIndex === 1) } label="Chats" >
-            {(this.props.chatsLoaded && this.props.usersLoaded) ? chats : <Loading />}
+            {(this.props.chatsLoaded && this.props.usersLoaded) ? <div styleName="chat-group">chats</div> : <Loading />}
           </Tab>
           <Tab value={2} style={ this.getStyle(this.state.activeIndex === 2) } label="Contacts" >
-            {this.props.usersLoaded ? users : <Loading />}
+            {this.props.usersLoaded ? <div styleName="chat-group">users</div> : <Loading />}
           </Tab>
           <Tab value={3} style={ this.getStyle(this.state.activeIndex === 3) } label="Groups" >
             {this.props.usersLoaded && <NewGroup users={this.props.users} />}
-            {(this.props.usersLoaded && this.props.roomsLoaded) ? rooms : <Loading />}
+            {(this.props.usersLoaded && this.props.roomsLoaded) ? <div styleName="chat-group">rooms</div> : <Loading />}
           </Tab>
         </Tabs>
       </div>
