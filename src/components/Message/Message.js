@@ -5,68 +5,16 @@ import CSSModules from 'react-css-modules';
 import styles from './styles.css';
 import Glyphicon from 'react-bootstrap/lib/Glyphicon'
 
-export function returnRich (text) {
-  var bold = /\*(\S([^*.]*?\S)?)\*/gm;
-  var html = text.replace(bold, '<strong>$1</strong>');  
-  
-  var italic = /_(\S([^*.]*?\S)?)_/gm;
-  var html = html.replace(italic, '<i>$1</i>');  
-  
-  var blink = /\^(\S([^*.]*?\S)?)\^/gm;
-  var html = html.replace(blink, '<blink class="blink-text">$1</blink>');         
-    
-  return (
-    <span dangerouslySetInnerHTML={{__html: html}} />
-  )
+import { decode } from '../../utils/utils';
 
-}
-
-
-function strip(html){
-   var doc = new DOMParser().parseFromString(html, 'text/html');
-   return doc.body.textContent || "";
-}
-
-function hasYoutube(url) {
-  var regExp = /.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-  var match = url.match(regExp);
-  if (match && match[2].length == 11) {
-    return match[2];
-  } else {
-    return false;
-  }
-}
-
-export function decode(html) {
-  let text = document.createElement('textarea');
-  text.innerHTML = html;
-
-  let value = text.value.replace(/[\u00A0-\u9999<>\&]/gim, function(i) {
-    return '&#'+i.charCodeAt(0)+';';
-  });
-
-  let yt = hasYoutube(value);
-
-  if (yt.length) {
-    return returnRich('<iframe width="420" height="315" src="https://www.youtube.com/embed/' + yt + '"></iframe>');
-  }
-
-
-
-
-  let bold = /\*(.*)\*/;
-  let italic = /_(.*)_/;
-
-  return returnRich(value);
-}
 
 function changeColor(col, amt) {
   
-    var usePound = false;
+    var useHash = false;
   
     if (col[0] == "#") {
         col = col.slice(1);
-        usePound = true;
+        useHash = true;
     }
  
     var num = parseInt(col,16);
@@ -86,7 +34,7 @@ function changeColor(col, amt) {
     if (g > 255) g = 255;
     else if (g < 0) g = 0;
  
-    return (usePound?"#":"") + (g | (b << 8) | (r << 16)).toString(16);
+    return (useHash ? "#" : "") + (g | (b << 8) | (r << 16)).toString(16);
   
 }
 

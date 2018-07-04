@@ -4,7 +4,7 @@ import CSSModules from 'react-css-modules';
 import styles from './styles.css';
 import Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import ReactDatasheet from 'react-datasheet';
-import {decode} from '../Message/Message';
+import {decode} from '../../utils/utils';
 import SpreadsheetHeader from '../SpreadsheetHeader/SpreadsheetHeader';
 import moment from 'moment'
 import {isDelivered, isSeen} from '../../messageUtils';

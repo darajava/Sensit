@@ -6,7 +6,7 @@ import CSSModules from 'react-css-modules';
 import styles from './styles.css';
 import Glyphicon from 'react-bootstrap/lib/Glyphicon'
 import {withRouter} from "react-router-dom";
-import {stringToIntHash} from '../../utils/utils';
+import {stringToIntHash, decode} from '../../utils/utils';
 
 let hash = require('object-hash');
 
@@ -69,7 +69,7 @@ const ChatItem = (props) => {
           </span>
         </div>
         <div styleName="last-message">
-          {lastMessage}
+          {lastMessage ? decode(lastMessage) : 'Status...'}
         </div>
       </div>
     </div>
