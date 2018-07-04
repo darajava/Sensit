@@ -31,8 +31,6 @@ export function isSeen(message) {
     message.seenBy.push(message.sentBy);    
   }
   
-  // console.log('seenby', message.seenBy);
-  // console.log(localStorage.getItem('id'));
   for (let i = 0; i < message.forUsers.length; i++) {
     if (!message.seenBy.includes(message.forUsers[i])) {
       return false;

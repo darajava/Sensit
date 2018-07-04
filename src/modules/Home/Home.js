@@ -76,8 +76,6 @@ class Home extends Component {
   }
 
   selectChat(roomId, users, user, room) {
-    console.log('bobobo', arguments )
-
     // I don't know why I need this double set state
     this.setState({chat: null}, () => {
       this.setState({

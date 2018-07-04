@@ -67,7 +67,6 @@ class Chat extends Component {
 
     this.typingTimeout = null;
     this.room = props.roomId;
-    console.log(this.props, 'sss');
 
     this.updateTyping = this.updateTyping.bind(this);
     this.handleReciept = this.handleReciept.bind(this);
@@ -79,7 +78,6 @@ class Chat extends Component {
 
   componentWillMount() {
     let props = this.props;
-    console.log(this.room);
 
     // If we don't get props (i.e. hot reload or page reload)
     // Then get them from localstorage
@@ -122,7 +120,7 @@ class Chat extends Component {
     connection.onerror = (error) => {
       // an error occurred when sending/receiving data
       // alert('error');
-      console.log(error)
+      console.error(error)
     };
 
     connection.onmessage = (message) => {
@@ -138,10 +136,7 @@ class Chat extends Component {
 
       // This will break any socket request that doesn't contain 'room'
       // Update them rather than move this
-      console.log('lll' + JSON.stringify(parsedMessage));
-      console.log('lll' + this.room);
       if (parsedMessage.data.room !== this.room) {
-        console.log('in here')
         return;
       }
 
@@ -459,8 +454,6 @@ class Chat extends Component {
         </div>
       )
     }
-
-    console.log('dddd', this.state.room);
 
     return (
       <div styleName="background">

@@ -103,7 +103,7 @@ export default class Spreadsheet extends React.Component {
 
     for (let i = messages.length - 1; i > messages.length - numMessages; i--) {
       if (!messages[i]) continue;
-      console.log(messages[i])
+
       if (messages[i].sentBy === localStorage.getItem('id')) {
         this.state.grid[y][this.replyX].value = decode(messages[i].text);
       } else {

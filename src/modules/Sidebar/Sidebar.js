@@ -34,6 +34,10 @@ class Sidebar extends Component {
   constructor() {
     super();
 
+    this.state = {
+      activeIndex: 1,
+    }
+
     this.handleTabChange = this.handleTabChange.bind(this);
   }
 
@@ -107,13 +111,13 @@ class Sidebar extends Component {
         <HomeHeader />
 
         <Tabs inkBarStyle={{ backgroundColor: '#fff'}} tabItemContainerStyle={{ height:44 }} onChange={this.handleTabChange}>
-          <Tab value={1} style={ this.getStyle(this.props.activeIndex === 1) } label="Chats" >
+          <Tab value={1} style={ this.getStyle(this.state.activeIndex === 1) } label="Chats" >
             {(this.props.chatsLoaded && this.props.usersLoaded) ? chats : <Loading />}
           </Tab>
-          <Tab value={2} style={ this.getStyle(this.props.activeIndex === 2) } label="Contacts" >
+          <Tab value={2} style={ this.getStyle(this.state.activeIndex === 2) } label="Contacts" >
             {this.props.usersLoaded ? users : <Loading />}
           </Tab>
-          <Tab value={3} style={ this.getStyle(this.props.activeIndex === 3) } label="Groups" >
+          <Tab value={3} style={ this.getStyle(this.state.activeIndex === 3) } label="Groups" >
             {this.props.usersLoaded && <NewGroup users={this.props.users} />}
             {(this.props.usersLoaded && this.props.roomsLoaded) ? rooms : <Loading />}
           </Tab>

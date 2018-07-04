@@ -16,7 +16,6 @@ const RoomHeader = (props) => {
   let onlineLight = null;
   let dateString = ''; 
 
-  console.log('sss', props);
   if (typeof props.user !== 'undefined') {
 
     let iscurrentDate = moment(props.user.lastOnline).isSame(new Date(), "day");
