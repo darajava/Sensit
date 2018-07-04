@@ -76,7 +76,7 @@ class Sidebar extends Component {
 
       console.log(user);
       chats[i] =
-        <div key={i}>
+        <div className="chat-group" key={i}>
           <ChatItem
             selectChat={this.props.selectChat}
             users={this.props.users}
@@ -91,7 +91,7 @@ class Sidebar extends Component {
     for (let i = 0; i < this.props.users.length; i++) {
       if (this.props.users[i]._id !== localStorage.getItem('id')) {
         users[i] = (
-          <div key={i}>
+          <div className="chat-group" key={i}>
             <ChatItem selectChat={this.props.selectChat} user={this.props.users[i]} users={this.props.users}/>
           </div>
         );
@@ -101,7 +101,7 @@ class Sidebar extends Component {
     let rooms = [];
     for (let i = 0; i < this.props.rooms.length; i++) {
       rooms[i] =
-        <div key={i}>
+        <div className="chat-group" key={i}>
           <ChatItem selectChat={this.props.selectChat} room={this.props.rooms[i]} users={this.props.users} group={true} />
         </div>;
     }
