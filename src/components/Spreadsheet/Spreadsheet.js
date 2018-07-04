@@ -178,12 +178,12 @@ export default class Spreadsheet extends React.Component {
   
 
     return (
-      <span>
+      <div className='container'>
       <SpreadsheetHeader />
       {spreadsheet}
       <span id="seen" />
       <span id="message-list" />
-      </span>
+      </div>
     )
   }
 }

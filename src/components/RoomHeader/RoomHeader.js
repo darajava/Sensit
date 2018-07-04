@@ -82,10 +82,6 @@ const RoomHeader = (props) => {
                 text: "Mute"
               },
               {
-                f: props.goIncognito,
-                text: "Go incognito"
-              },
-              {
                 f: () => document.location = '/login',
                 text: "Log out"
               },
