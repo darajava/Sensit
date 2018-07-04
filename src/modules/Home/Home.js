@@ -69,9 +69,7 @@ class Home extends Component {
 
 
       switch (parsedMessage.type) {
-        case 'message':
-      console.log('XXX');
-        
+        case 'message':        
           this.getRecent('chats');
       }
     };
