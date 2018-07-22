@@ -4,13 +4,10 @@ import { connect } from 'react-redux';
 import PrivateRoute from '../../components/PrivateRoute';
 import Loading from '../../components/Loading/Loading';
 import { ConnectedRouter } from 'react-router-redux';
-import createHistory from 'history/createBrowserHistory';
 
 import LoginView from '../../components/Login/Login';
 
 import { withRouter } from 'react-router-dom'
-
-const history = createHistory();
 
 class Login extends Component {
 

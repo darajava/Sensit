@@ -52,13 +52,11 @@ import InputArea from '../../components/InputArea/InputArea';
 import MessageList from '../../components/MessageList/MessageList';
 import Spreadsheet from '../../components/Spreadsheet/Spreadsheet';
 import { ConnectedRouter } from 'react-router-redux';
-import createHistory from 'history/createBrowserHistory';
 import CSSModules from 'react-css-modules';
 import RoomHeader from '../../components/RoomHeader/RoomHeader';
 
 import styles from './styles.css';
 
-const history = createHistory();
 let connection, checkOnlineInterval;
 
 class Chat extends Component {

@@ -2,7 +2,6 @@ import React , { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { ConnectedRouter } from 'react-router-redux';
-import createHistory from 'history/createBrowserHistory';
 import CSSModules from 'react-css-modules';
 import styles from './styles.css';
 import Loading from '../../components/Loading/Loading';

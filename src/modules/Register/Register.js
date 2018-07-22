@@ -2,7 +2,6 @@ import React , { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import PrivateRoute from '../../components/PrivateRoute';
 import { ConnectedRouter } from 'react-router-redux';
-import createHistory from 'history/createBrowserHistory';
 
 import RegisterView from '../../components/Login/Register';
 
