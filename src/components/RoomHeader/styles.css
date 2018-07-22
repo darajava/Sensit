@@ -1,8 +1,9 @@
 .chat-item {
   display: inline-block;
+  position: relative; /* todo: use flex */ 
   height: 69px;
   width: 100%;
-  background: #d6ecf7f0;
+  background: rgb(214, 236, 247, 0.6);
   font-weight: bold;
   z-index: 1;
   padding: 14px 14px;
