@@ -73,6 +73,7 @@ class Chat extends Component {
     this.goIncognito = this.goIncognito.bind(this);
     this.showMenu = this.showMenu.bind(this);
     this.hideMenu = this.hideMenu.bind(this);
+    this.back = this.back.bind(this);
   }
 
 
@@ -439,6 +440,15 @@ class Chat extends Component {
     this.setState({incognito: true, showMenu: false});
   }
 
+  back() {
+    this.setState({fadeOut: true});
+
+    setTimeout(() => {
+      this.setState({fadeOut: false});
+      this.props.clearChat();
+    }, 400);
+  }
+
   render() {
 
     if (this.state.incognito) {
@@ -456,15 +466,15 @@ class Chat extends Component {
     }
 
     return (
-      <div styleName="background">
+      <div styleName={"background " + (this.state.fadeOut ? 'fade' : '')}>
         <RoomHeader
           room={this.state.room}
           user={this.state.user}
           showMenu={this.showMenu}  //
           hideMenu={this.hideMenu}   //
           show={this.state.showMenu}  // bad code
-          goIncognito={this.goIncognito}
           typing={this.state.isTyping}
+          back={this.back}
           currentlyTyping={this.state.currentlyTyping} />
         <MessageList
           isGroup={typeof this.state.room !== 'undefined'}
@@ -480,6 +490,6 @@ class Chat extends Component {
   }
 }
 
-export default CSSModules(Chat, styles);
+export default CSSModules(Chat, styles, {allowMultiple: true});
 
 // export default connect(mapStateToProps, null)(Chat);

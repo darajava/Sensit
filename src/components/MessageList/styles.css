@@ -1,5 +1,4 @@
 .list {
-  max-height: calc(100vh - 70px); /* height of footer on page load */
+  max-height: calc(100vh - 140px); /* 2 * height of header on page load */
   overflow-y: auto;
-  padding-top: 69px; /* height of roomheader */
 }

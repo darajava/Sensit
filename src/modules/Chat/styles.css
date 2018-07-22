@@ -5,5 +5,26 @@
   top: 0;
   left: 347px;
   width: calc(100vw - 347px);
-  
+}
+
+
+@media only screen 
+  and (max-device-width: 700px) {
+
+  .background {
+    left: 0;
+    width: 100vw;
+  }
+
+  .background.fade {
+    opacity: 0;
+    transform: scale(0.9) translateY(20%);
+    transition: all 0.15s ease-out;
+  }
+}
+
+
+.background.fade {
+  opacity: 0;
+  transition: all 0.05s ease-out;
 }

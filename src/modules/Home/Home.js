@@ -34,6 +34,7 @@ class Home extends Component {
     this.getRecent = this.getRecent.bind(this);
     // this.checkForNewMessages = this.checkForNewMessages.bind(this);
     this.selectChat = this.selectChat.bind(this);
+    this.clearChat = this.clearChat.bind(this);
   }
 
   componentWillMount() {
@@ -75,6 +76,10 @@ class Home extends Component {
     };
   }
 
+  clearChat() {
+    this.setState({chat: null});
+  }
+
   selectChat(roomId, users, user, room) {
     // I don't know why I need this double set state
     this.setState({chat: null}, () => {
@@ -86,6 +91,7 @@ class Home extends Component {
             user={user}
             room={room}
             sendUpdate={this.sendUpdate}
+            clearChat={this.clearChat}
           />
         )}
       );

@@ -1,7 +1,7 @@
 .chat-item {
   display: inline-block;
   height: 69px;
-  width: calc(100vw - 347px);
+  width: 100%;
   background: #d6ecf7f0;
   font-weight: bold;
   z-index: 1;
@@ -9,7 +9,6 @@
   color: white;
   box-shadow: 0px 3px 2px -2px #42424240;
   font-size: 16px;
-  position: fixed;
   border-left: 1px solid #c9daff;
 }
 
