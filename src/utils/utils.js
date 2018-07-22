@@ -54,7 +54,7 @@ export function decode(html, noYt) {
   let yt = hasYoutube(value);
 
   if (yt.length && !noYt) {
-    return returnRich('<iframe width="420" height="315" src="https://www.youtube.com/embed/' + yt + '"></iframe>');
+    return returnRich('<iframe src="https://www.youtube.com/embed/' + yt + '"></iframe>');
   }
 
   return returnRich(value);

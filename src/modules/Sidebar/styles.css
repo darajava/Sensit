@@ -8,3 +8,15 @@
   overflow-y: auto;
   max-height: calc(100vh - 114px);
 }
+
+
+@media only screen 
+  and (max-device-width: 700px) {
+
+  .container {
+    width: 100vw;
+    max-width: 100vw;
+  }
+
+  
+}
