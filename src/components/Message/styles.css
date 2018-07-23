@@ -1,6 +1,7 @@
 .message-holder {
   width: 100%;
   display: inline-block;
+  user-select: text;
 }
 
 .message-holder iframe {

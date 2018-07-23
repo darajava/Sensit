@@ -262,7 +262,9 @@ class Chat extends Component {
   scrollToBottom() {
     if (!this.scrolled) {
       let element = document.getElementById('message-list');
-      element.scrollTop = element.scrollHeight;
+      if (element) {
+        element.scrollTop = element.scrollHeight;
+      }
     }
   }
 

@@ -11,13 +11,14 @@
 }
 
 .chat-item:hover {
-  background-color: #bdccbd0f;
+  background-color: #f5fcff;
   transition: background-color 0.3s;
   cursor: pointer;
 }
 
 .chat-item:active {
-  background-color: #ddecdd;
+  background-color: #ecf5f9;
+
   cursor: pointer;
 }
 
