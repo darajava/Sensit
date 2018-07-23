@@ -113,7 +113,7 @@ class Chat extends Component {
       '&myId=' + localStorage.getItem('id')
     );
 
-    setInterval(() => {
+    this.checkScrollInterval = setInterval(() => {
       this.scrollToBottom()
     }, 100)
 
@@ -227,6 +227,7 @@ class Chat extends Component {
   componentWillUnmount() {
     connection.close();
     clearInterval(checkOnlineInterval);
+    clearInterval(this.checkScrollInterval);
   }
 
   componentDidMount() {
