@@ -77,6 +77,8 @@ class Chat extends Component {
 
   componentWillMount() {
     let props = this.props;
+    this.scrolled = false;
+
 
     // If we don't get props (i.e. hot reload or page reload)
     // Then get them from localstorage
@@ -100,9 +102,7 @@ class Chat extends Component {
 
     let users = encodeURIComponent(JSON.stringify(props.users));
 
-    setTimeout(() => {
-      this.getMessages(this.room)
-    }, 0);
+    this.getMessages(this.room)
 
     connection = new WebSocket(
       'ws://' + process.env.REACT_APP_CHAT_URL + '?room=' + this.room +
@@ -112,7 +112,7 @@ class Chat extends Component {
 
     setInterval(() => {
       this.scrollToBottom()
-    }, 500)
+    }, 100)
 
     // if user is running mozilla then use its built-in WebSocket
     window.WebSocket = window.WebSocket || window.MozWebSocket;
@@ -232,7 +232,6 @@ class Chat extends Component {
     }
     document.getElementById('seen').addEventListener('click', this.markAllAsSeen);
 
-    this.scrolled = false;
     document.getElementById('message-list').addEventListener('scroll', (e) => {
       // console.log(e);
       e = e.srcElement;
