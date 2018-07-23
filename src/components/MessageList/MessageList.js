@@ -29,7 +29,9 @@ const MessageList = (props) => {
 
   return (
     <div id="message-list" styleName="list">
-      {messageList}
+      <div styleName="child">
+        {messageList}
+      </div>
     </div>
   )
 }

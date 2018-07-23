@@ -6,11 +6,18 @@
   background: white;
   display: flex;
   align-items: center;
+  position: relative;
+  overflow: hidden;
 }
 
 .chat-item:hover {
   background-color: #bdccbd0f;
   transition: background-color 0.3s;
+  cursor: pointer;
+}
+
+.chat-item:active {
+  background-color: #ddecdd;
   cursor: pointer;
 }
 

@@ -100,13 +100,19 @@ class Chat extends Component {
 
     let users = encodeURIComponent(JSON.stringify(props.users));
 
-    this.getMessages(this.room);
+    setTimeout(() => {
+      this.getMessages(this.room)
+    }, 0);
 
     connection = new WebSocket(
       'ws://' + process.env.REACT_APP_CHAT_URL + '?room=' + this.room +
       '&users=' + users +
       '&myId=' + localStorage.getItem('id')
     );
+
+    setInterval(() => {
+      this.scrollToBottom()
+    }, 500)
 
     // if user is running mozilla then use its built-in WebSocket
     window.WebSocket = window.WebSocket || window.MozWebSocket;
@@ -210,6 +216,7 @@ class Chat extends Component {
 
     this.pushMessages = this.pushMessages.bind(this);
     this.markAllAsSeen = this.markAllAsSeen.bind(this);
+    this.scrollToBottom = this.scrollToBottom.bind(this);
   }
 
   componentWillUnmount() {
@@ -224,6 +231,20 @@ class Chat extends Component {
       checkOnlineInterval = setInterval(() => this.getLastOnline(this.state.user._id), 5000);
     }
     document.getElementById('seen').addEventListener('click', this.markAllAsSeen);
+
+    this.scrolled = false;
+    document.getElementById('message-list').addEventListener('scroll', (e) => {
+      // console.log(e);
+      e = e.srcElement;
+      let offset = e.scrollTop + e.offsetHeight;
+      let height = e.scrollHeight;
+
+      if (offset !== height) {
+        this.scrolled = true;
+      } else {
+        this.scrolled = false;
+      }
+    });
   }
 
   // Take a delivery or seen reciept and reflect it in frontend if needed
@@ -239,6 +260,13 @@ class Chat extends Component {
     }
   }
 
+  scrollToBottom() {
+    if (!this.scrolled) {
+      let element = document.getElementById('message-list');
+      element.scrollTop = element.scrollHeight;
+    }
+  }
+
   pushMessages(messages) {
     // console.log(messages);
     
@@ -246,10 +274,7 @@ class Chat extends Component {
       return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
     });
 
-    this.setState({messages}, () => {
-      let chatBox = document.getElementById('message-list');
-      chatBox.scrollTop = chatBox.scrollHeight;
-    })
+    this.setState({messages}, this.scrollToBottom)
   }
 
   sendMessage(message) {
@@ -464,25 +489,28 @@ class Chat extends Component {
     }
 
     return (
-      <div styleName={"background " + (this.state.fadeOut ? 'fade' : '')}>
-        <RoomHeader
-          room={this.state.room}
-          user={this.state.user}
-          showMenu={this.showMenu}  //
-          hideMenu={this.hideMenu}   //
-          show={this.state.showMenu}  // bad code
-          typing={this.state.isTyping}
-          back={this.back}
-          currentlyTyping={this.state.currentlyTyping} />
-        <MessageList
-          isGroup={typeof this.state.room !== 'undefined'}
-          messages={this.state.messages}
-          loading={this.state.loadingMessages}
-        />
-        <InputArea
-          sendMessage={(msg) => this.sendMessage(msg)}
-          typing={this.updateTyping}
-        />
+      <div styleName={"container"}>
+        <div styleName={"background " + (this.state.fadeOut ? 'fade' : '')}>
+          <RoomHeader
+            room={this.state.room}
+            user={this.state.user}
+            showMenu={this.showMenu}  //
+            hideMenu={this.hideMenu}   //
+            show={this.state.showMenu}  // bad code
+            typing={this.state.isTyping}
+            back={this.back}
+            currentlyTyping={this.state.currentlyTyping}
+          />
+          <MessageList
+            isGroup={typeof this.state.room !== 'undefined'}
+            messages={this.state.messages}
+            loading={this.state.loadingMessages}
+          />
+          <InputArea
+            sendMessage={(msg) => this.sendMessage(msg)}
+            typing={this.updateTyping}
+          />
+        </div>
       </div>
     );
   }

@@ -1,6 +1,6 @@
-.chat-item {
+.room-header {
   display: inline-block;
-  position: relative; /* todo: use flex */ 
+  position: absolute; /* todo: use flex */ 
   height: 69px;
   width: 100%;
   background: rgb(214, 236, 247, 0.6);

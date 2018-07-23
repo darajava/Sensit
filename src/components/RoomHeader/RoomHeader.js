@@ -46,7 +46,7 @@ const RoomHeader = (props) => {
 
 
   return (
-      <div styleName='chat-item'>
+      <div styleName='room-header'>
         <div styleName='back-button' onClick={props.back}>
           <span styleName='glyph'>
             <Glyphicon glyph="menu-left" />

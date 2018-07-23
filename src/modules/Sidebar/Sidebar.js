@@ -52,11 +52,39 @@ class Sidebar extends Component {
 
 
   getCorrectUser(userId, users) {
-    for (var i = 0; i < users.length; i++) {
+    for (let i = 0; i < users.length; i++) {
       if (users[i]._id === userId) {
         return users[i];
       }
     }
+  }
+
+  applyTouchStyles() {
+    let button = document.querySelectorAll('.touchh');
+    for (let i = 0; i < button.length; i++) {
+      button[i].ontouchdown = function(e) {
+
+        let x = (typeof e.offsetX === 'undefined') ? e.layerX : e.offsetX;
+        let y = (typeof e.offsetY === 'undefined') ? e.layerY : e.offsetY;
+        let effect = document.createElement('div');
+
+        effect.className = 'effect';
+        effect.style.top = y + 'px';
+        effect.style.left = x + 'px';
+        e.srcElement.appendChild(effect);
+        setTimeout(() => {
+          e.srcElement.removeChild(effect);
+        }, 1100);
+      }
+    }
+  }
+
+  componentDidMount() {
+    this.applyTouchStyles();
+  }
+
+  componentDidUpdate() {
+    this.applyTouchStyles();
   }
 
   render() {
@@ -76,7 +104,7 @@ class Sidebar extends Component {
       console.log(user);
       chats[i] =
         <div key={i}>
-          <ChatItem
+          <ChatItem 
             selectChat={this.props.selectChat}
             users={this.props.users}
             chat={true}
@@ -108,10 +136,17 @@ class Sidebar extends Component {
     return (
       <div styleName="container">
         <HomeHeader />
-
-        <Tabs inkBarStyle={{ backgroundColor: '#fff'}} tabItemContainerStyle={{ height:44 }} onChange={this.handleTabChange}>
-          <Tab value={1} style={ this.getStyle(this.state.activeIndex === 1) } label="Chats" >
             {(this.props.chatsLoaded && this.props.usersLoaded) ? <div styleName="chat-group">{chats}</div> : <Loading />}
+
+      </div>
+    );
+  }
+}
+
+
+
+        /*<Tabs inkBarStyle={{ backgroundColor: '#fff'}} tabItemContainerStyle={{ height:44 }} onChange={this.handleTabChange}>
+          <Tab value={1} style={ this.getStyle(this.state.activeIndex === 1) } label="Chats" >
           </Tab>
           <Tab value={2} style={ this.getStyle(this.state.activeIndex === 2) } label="Contacts" >
             {this.props.usersLoaded ? <div styleName="chat-group">{users}</div> : <Loading />}
@@ -120,11 +155,7 @@ class Sidebar extends Component {
             {this.props.usersLoaded && <NewGroup users={this.props.users} />}
             {(this.props.usersLoaded && this.props.roomsLoaded) ? <div styleName="chat-group">{rooms}</div> : <Loading />}
           </Tab>
-        </Tabs>
-      </div>
-    );
-  }
-}
+        </Tabs>*/
 
 export default CSSModules(Sidebar, styles);
 

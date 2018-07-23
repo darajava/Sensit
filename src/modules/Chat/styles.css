@@ -1,5 +1,4 @@
-.background {
-  background-image: url(../../background.jpeg);
+.container {
   height: 100vh;
   position: absolute;
   top: 0;
@@ -7,35 +6,41 @@
   width: calc(100vw - 347px);
 }
 
+.background {
+  background-image: url(../../background.jpeg);
+  display: flex;
+  flex-direction: column;
+  max-height: 100vh;
+  justify-content: space-between;
+}
+
 
 @media only screen 
   and (max-device-width: 700px) {
 
-  .background {
+  .container {
     left: 0;
     width: 100vw;
 
-    animation-duration: 0.25s;
+    animation-duration: 0.46s;
     animation-name: slidein;
   }
 
   @keyframes slidein {
     0% {
       opacity: 0;
-    }
-
-    10% {
-      opacity: 0;
+      transform: scale(0.97);
     }
 
     100% {
       opacity: 1;
+      transform: scale(1);
     }
   }
 
-  .background.fade {
+  .container.fade {
     opacity: 0;
-    transition: all 0.25s ease-out;
+    transition: all 0.45s ease-out;
   }
 }
 

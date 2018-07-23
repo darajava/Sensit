@@ -57,7 +57,7 @@ const ChatItem = (props) => {
   }
 
   return (
-    <div onClick={clickHandler} styleName='chat-item'>
+    <div onClick={clickHandler} styleName='chat-item' className="touchh">
       <img styleName='profile-image' src={imageUrl} />
       <div styleName="content-holder">
         <div>

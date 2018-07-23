@@ -19,7 +19,7 @@ class Home extends Component {
   constructor() {
     super();
     this.state = {
-      chat: null,
+      chat: false,
       chats: [],
       chatsLoaded: false,
       users: [],
@@ -69,33 +69,31 @@ class Home extends Component {
 
 
       switch (parsedMessage.type) {
-        case 'message':        
+        case 'message':
+          console.log();
           this.getRecent('chats');
       }
     };
   }
 
   clearChat() {
-    this.setState({chat: null});
+    this.setState({chat: false});
   }
 
   selectChat(roomId, users, user, room) {
-    // I don't know why I need this double set state
-    this.setState({chat: null}, () => {
-      this.setState({
-        chat: (
-          <Chat
-            roomId={roomId}
-            users={users}
-            user={user}
-            room={room}
-            sendUpdate={this.sendUpdate}
-            clearChat={this.clearChat}
-          />
-        )}
-      );
-    });
-    
+    console.log('xxxx', arguments)
+
+    // XXX: I need the double set state for the desktop version, don't know why
+    // It switches chats fine on mobile, or after chat manually closed
+    this.setState({
+      chat: false,
+    }, () => this.setState({
+      chat: true,
+      chatRoomId: roomId,
+      chatUsers: users,
+      chatUser: user,
+      chatRoom: room,
+    }));
   }
 
   getRecent(type) {
@@ -150,11 +148,22 @@ class Home extends Component {
   }
 
   render() {
+
+    let chat = (
+      <Chat
+        roomId={this.state.chatRoomId}
+        users={this.state.chatUsers}
+        user={this.state.chatUser}
+        room={this.state.chatRoom}
+        sendUpdate={this.sendUpdate}
+        clearChat={this.clearChat}
+      />
+    );
     
     return (
       <div>
         <Sidebar selectChat={this.selectChat} {...this.state} />
-        { this.state.chat }
+        { this.state.chat && chat }
       </div>
     );
   }
