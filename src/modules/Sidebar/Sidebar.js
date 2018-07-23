@@ -63,19 +63,27 @@ class Sidebar extends Component {
   applyTouchStyles() {
     let button = document.querySelectorAll('.touchh');
     for (let i = 0; i < button.length; i++) {
-      button[i].onclick = function(e) {
-        let x = e.offsetX;
-        let y = e.offsetY;
+      let listener = function(e) {
+
+        e.offsetX = e.touches[0].pageX - e.touches[0].target.offsetLeft;     
+        e.offsetY = e.touches[0].pageY - e.touches[0].target.offsetTop;
+
+
+
         let effect = document.createElement('div');
 
         effect.className = 'effect';
-        effect.style.top = y + 'px';
-        effect.style.left = x + 'px';
+        effect.style.top = e.offsetY + 'px';
+        effect.style.left = e.offsetX + 'px';
         e.srcElement.prepend(effect);
         setTimeout(() => {
           // e.srcElement.removeChild(effect);
         }, 1100);
       }
+
+      // button[i].onclick = listener;
+      button[i].ontouchstart = listener;
+
     }
   }
 

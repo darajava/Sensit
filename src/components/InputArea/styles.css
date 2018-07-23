@@ -51,7 +51,7 @@
 }
 
 [placeholder]:empty:focus:before {
-    content: "";
+    content: "Type your message";
 }
 
 .glyph-position {

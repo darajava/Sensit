@@ -231,6 +231,12 @@ class Chat extends Component {
   }
 
   componentDidMount() {
+
+    window.onpopstate = (e) => {
+      e.preventDefault();
+      this.back();
+    }
+
     // if we are in a group chat, don't check for last online
     if (this.state.user) {
       // Check every 5s for new online status
