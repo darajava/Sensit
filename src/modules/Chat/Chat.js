@@ -102,6 +102,9 @@ class Chat extends Component {
 
     let users = encodeURIComponent(JSON.stringify(props.users));
 
+    this.messageSound = new Audio('message.wav');
+    this.messageSentSound = new Audio('messagesent.wav');
+
     this.getMessages(this.room)
 
     connection = new WebSocket(
@@ -207,6 +210,8 @@ class Chat extends Component {
               }
             }
 
+            this.messageSound.play();
+
             this.pushMessages(this.state.messages.concat([parsedMessage.data]));
           }
 
@@ -297,6 +302,8 @@ class Chat extends Component {
         sentBy: localStorage.getItem('id'),
         fake: true, // This is when we fake the message on the frontend before delivery to the server
       }
+
+      this.messageSentSound.play();
 
       let messages = this.state.messages;
 
