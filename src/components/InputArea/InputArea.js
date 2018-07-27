@@ -9,12 +9,20 @@ import ReactDOMServer from 'react-dom/server';
 
 const InputArea = (props) => {
 
-  let sendMessage = (e) => {
+  let sendMessage = (e, sensitive) => {
     if (e.key === 'Enter' || typeof e.key === 'undefined') {
       e.preventDefault();
-      props.sendMessage(document.getElementById('message-box').innerHTML);
+
+      if (!props.sensit) {
+        props.showSensit();
+
+        return;
+      }
+      props.sendMessage(document.getElementById('message-box').innerHTML, !!sensitive);
       document.getElementById('message-box').innerHTML = '';
       props.typing(false);
+
+      props.hideSensit();
     } else {
       if (e.key.length == 1) {
         props.typing(true);
@@ -29,6 +37,8 @@ const InputArea = (props) => {
     document.getElementById('message-box').focus();
   };
 
+  let sensitButton = props.sensit && <button styleName="send-select abs lock" onClick={(e) => sendMessage(e, true)} />;
+
   return (
     <div styleName="bottom" id="seen">
       <div styleName="input-holder">
@@ -40,14 +50,17 @@ const InputArea = (props) => {
           contentEditable="true">
         </span>
       </div>
-      <button styleName="send-select">
-        <span styleName="glyph-position">
-          <Glyphicon glyph="send" onClick={sendMessage} />
-        </span>
-      </button>
+      <div styleName="button-container">
+        <button styleName="send-select">
+          <span styleName="glyph-position">
+            <Glyphicon glyph="send" onClick={props.sensit ? sendMessage : props.showSensit} />
+          </span>
+        </button>
+        {sensitButton}
+      </div>
     </div>
   )
 }
 
-export default CSSModules(InputArea, styles);
+export default CSSModules(InputArea, styles, {allowMultiple: true});
  

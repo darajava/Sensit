@@ -145,7 +145,7 @@ class Sidebar extends Component {
       <div styleName="container">
         <HomeHeader />
             {(this.props.chatsLoaded && this.props.usersLoaded) ? <div styleName="chat-group">{chats}</div> : <Loading />}
-
+            {this.props.usersLoaded ? <div styleName="chat-group">{users}</div> : <Loading />}
       </div>
     );
   }

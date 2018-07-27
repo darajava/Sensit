@@ -290,7 +290,7 @@ class Chat extends Component {
     this.setState({messages}, this.scrollToBottom)
   }
 
-  sendMessage(message) {
+  sendMessage = (message, sensitive) => {
       if (!message) {
         return;
       }
@@ -305,6 +305,7 @@ class Chat extends Component {
         deliveredTo: [],
         username: JSON.parse(localStorage.getItem('user')).username,
         room: this.room,
+        sensitive,
         forUsers: this.state.users,
         sentBy: localStorage.getItem('id'),
         fake: true, // This is when we fake the message on the frontend before delivery to the server
@@ -317,6 +318,8 @@ class Chat extends Component {
       messages.push(jsonMessage);
 
       this.pushMessages(messages);
+
+      console.log('ddd', jsonMessage);
 
       connection.send(JSON.stringify({
         type: 'message',
@@ -369,7 +372,7 @@ class Chat extends Component {
           message: message,
           userId: localStorage.getItem('id'), // TODO: get this from JWT on the server
           token: localStorage.getItem('token'),
-        })
+        }),
       }).then((response) => {
         this.sendDeliveredMessage(message);
       }).catch((err) => {
@@ -487,6 +490,18 @@ class Chat extends Component {
     }, 400);
   }
 
+  showSensit() {
+    this.setState({
+      sensit: true,
+    }); 
+  }
+
+  hideSensit() {
+    this.setState({
+      sensit: false,
+    }); 
+  }
+
   render() {
 
     if (this.state.incognito) {
@@ -522,8 +537,11 @@ class Chat extends Component {
             loading={this.state.loadingMessages}
           />
           <InputArea
-            sendMessage={(msg) => this.sendMessage(msg)}
+            sendMessage={this.sendMessage}
             typing={this.updateTyping}
+            showSensit={this.showSensit.bind(this)}
+            hideSensit={this.hideSensit.bind(this)}
+            sensit={this.state.sensit}
           />
         </div>
       </div>

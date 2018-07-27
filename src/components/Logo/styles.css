@@ -16,9 +16,8 @@
 }
 
 .inline .it {
-  color: #3594b1;
+  color: #158890;
 
-  opacity: 0.7;
 }
 
 .login .it {
@@ -46,7 +45,7 @@
   padding: 14px 14px 18px;
   margin-bottom: -3px;
   font-size: 28px;
-  background: #f1f1f1;
+  background-color: rgba(205, 232, 247, 0.34);;
   width: 100%;
 }
 

@@ -51,81 +51,101 @@ let stringToColor = function(str) {
   return color;
 }
 
-const Message = (props) => {
+class Message extends React.Component {
 
-  let delivered = <span styleName="sent-icon"><Glyphicon glyph="ok" /></span>;
-  
-  if (props.isLastSeen) {
-    delivered = (
-      <span styleName="seen-image">
-        <img src={
-          props.user && props.user.image
-            ? props.user.image
-            : 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png' }
-            />
-      </span>
-    );
-  } else if (props.isSeen) {
-    let fadeStyle = styles["seen-image"] + " " + styles["fade-out"];
-    delivered = (
-      <span className={fadeStyle}>
-        <img src={
-          props.user && props.user.image
-            ? props.user.image
-            : 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png' }
-            />
-      </span>
-    );
-  } else if (props.isDelivered) {
-    delivered = <span styleName="delivered-icon"><Glyphicon glyph="ok" /></span>;
-  } else if (props.message.fake) {
-    delivered = <span styleName="pending-icon"><Glyphicon glyph="time" /></span>
-  }
+  constructor() {
+    super();
 
-  let bang = '';
-
-  if (props.message.text.length < 50 && props.message.text.indexOf('!') > -1) {
-    if (props.message.text.indexOf('!!') > -1) {
-      bang = 'louder';
-    } else {
-      bang = 'loud';
+    this.state = {
+      show: false,
     }
   }
 
-  let username = '';
+  showMessage = () => {
+    this.setState({
+      show: true,
+    })
+  }
 
-  if (props.isGroup && !props.mine) {
-    let nameColor = stringToColor(props.username);
-    username = (
-      <div>
-        <div styleName="username-hint" style={{color: nameColor, borderBottom: "1px solid " + changeColor(nameColor, 190)}}>
-          {props.username}
+  render() {
+
+    let props = this.props;
+    let delivered = <span styleName="sent-icon"><Glyphicon glyph="ok" /></span>;
+    
+    if (props.isLastSeen) {
+      delivered = (
+        <span styleName="seen-image">
+          <img src={
+            props.user && props.user.image
+              ? props.user.image
+              : 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png' }
+              />
+        </span>
+      );
+    } else if (props.isSeen) {
+      let fadeStyle = styles["seen-image"] + " " + styles["fade-out"];
+      delivered = (
+        <span className={fadeStyle}>
+          <img src={
+            props.user && props.user.image
+              ? props.user.image
+              : 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png' }
+              />
+        </span>
+      );
+    } else if (props.isDelivered) {
+      delivered = <span styleName="delivered-icon"><Glyphicon glyph="ok" /></span>;
+    } else if (props.message.fake) {
+      delivered = <span styleName="pending-icon"><Glyphicon glyph="time" /></span>
+    }
+
+    let bang = '';
+
+    if (props.message.text.length < 50 && props.message.text.indexOf('!') > -1) {
+      if (props.message.text.indexOf('!!') > -1) {
+        bang = 'louder';
+      } else {
+        bang = 'loud';
+      }
+    }
+
+    let username = '';
+
+    if (props.isGroup && !props.mine) {
+      let nameColor = stringToColor(props.username);
+      username = (
+        <div>
+          <div styleName="username-hint" style={{color: nameColor, borderBottom: "1px solid " + changeColor(nameColor, 190)}}>
+            {props.username}
+          </div>
+        </div>
+      );
+    }
+
+    let sensitiveClass = !this.state.show && props.message.sensitive ? 'sensitive' : '';
+
+    return (
+      <div styleName={`message-holder`} onClick={this.showMessage}>
+        <div styleName={props.mine ? ' my-message' : ' your-message'}>
+          {username}
+          <span styleName={bang + ' ' + sensitiveClass}>
+            {decode(props.message.text)}
+          </span>
+          <span styleName="info">
+            <div styleName="time">
+              {moment(props.message.createdAt).format('h:mm a')}
+            </div>
+            {props.mine && 
+              <div styleName="delivered">
+                {delivered}
+              </div>
+            }
+          </span>
         </div>
       </div>
     );
   }
-
-  return (
-    <div styleName='message-holder'>
-      <div styleName={props.mine ? 'my-message' : 'your-message'}>
-        {username}
-        <span styleName={bang}>
-          {decode(props.message.text)}
-        </span>
-        <span styleName="info">
-          <div styleName="time">
-            {moment(props.message.createdAt).format('h:mm a')}
-          </div>
-          {props.mine && 
-            <div styleName="delivered">
-              {delivered}
-            </div>
-          }
-        </span>
-      </div>
-    </div>
-  );
 }
 
-export default CSSModules(Message, styles);
+export default CSSModules(Message, styles, {allowMultiple: true});
  
