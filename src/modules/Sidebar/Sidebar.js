@@ -145,13 +145,13 @@ class Sidebar extends Component {
       <div styleName="container">
         <HomeHeader />
             {(this.props.chatsLoaded && this.props.usersLoaded) ? <div styleName="chat-group">{chats}</div> : <Loading />}
-            {this.props.usersLoaded ? <div styleName="chat-group">{users}</div> : <Loading />}
       </div>
     );
   }
 }
 
 
+            // {this.props.usersLoaded ? <div styleName="chat-group">{users}</div> : <Loading />}
 
         /*<Tabs inkBarStyle={{ backgroundColor: '#fff'}} tabItemContainerStyle={{ height:44 }} onChange={this.handleTabChange}>
           <Tab value={1} style={ this.getStyle(this.state.activeIndex === 1) } label="Chats" >

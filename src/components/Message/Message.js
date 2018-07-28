@@ -3,6 +3,7 @@ import moment from 'moment'
 
 import CSSModules from 'react-css-modules';
 import styles from './styles.css';
+import Loading from '../Loading/Loading';
 import Glyphicon from 'react-bootstrap/lib/Glyphicon'
 
 import { decode } from '../../utils/utils';
@@ -58,13 +59,24 @@ class Message extends React.Component {
 
     this.state = {
       show: false,
+      spinner: false,
     }
   }
 
   showMessage = () => {
+    if (!this.props.message.sensitive) {
+      return;
+    }
+
     this.setState({
-      show: true,
+      spinner: true,
     })
+    this.props.requestSensitiveMessages((show) => {
+      this.setState({
+        show,
+        spinner: false,
+      })
+    });
   }
 
   render() {
@@ -124,11 +136,14 @@ class Message extends React.Component {
 
     let sensitiveClass = !this.state.show && props.message.sensitive ? 'sensitive' : '';
 
+    let spinner = this.state.spinner ? <div styleName="loader-holder"> <Loading message={true}/></div> : null;
+
     return (
       <div styleName={`message-holder`} onClick={this.showMessage}>
         <div styleName={props.mine ? ' my-message' : ' your-message'}>
+          {spinner}
           {username}
-          <span styleName={bang + ' ' + sensitiveClass}>
+          <span styleName={'message-text' + bang + ' ' + sensitiveClass}>
             {decode(props.message.text)}
           </span>
           <span styleName="info">

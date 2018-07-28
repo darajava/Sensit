@@ -327,8 +327,10 @@ class Chat extends Component {
       }));
   }
 
-  getMessages(room) {
-    fetch("http://" + process.env.REACT_APP_API_URL + "/messages", {
+  getMessages(room, pin, callback) {
+    let getSensitive = typeof pin !== 'undefined' ? '-sensitive' : '';
+    let success = true;
+    fetch("http://" + process.env.REACT_APP_API_URL + "/messages" + getSensitive, {
       method: "POST",
 
       headers: {
@@ -339,11 +341,22 @@ class Chat extends Component {
       body: JSON.stringify({
         room: room,
         page: 1, // TODO: Gets all messages for now  
+        pin,
       }),
     })
     .then( (response) => { 
-       return response.json();
+      if (!response.ok) {
+        success = false
+        alert('wrong pin');
+        return;
+      }
+    
+      return response.json();
     }).then((json) => {
+      if (callback) {
+        callback(success);
+      }
+      if (!json) return;
       let messages = [];
       for (let key in json) {
         if (json.hasOwnProperty(key)) {
@@ -354,7 +367,7 @@ class Chat extends Component {
 
       this.setState({loadingMessages: false});
       this.pushMessages(messages);
-    });
+    })
   }
 
   markAsDelivered(message) {
@@ -535,6 +548,7 @@ class Chat extends Component {
             isGroup={typeof this.state.room !== 'undefined'}
             messages={this.state.messages}
             loading={this.state.loadingMessages}
+            requestSensitiveMessages={(pin, callback) => this.getMessages(this.room, pin, callback)}
           />
           <InputArea
             sendMessage={this.sendMessage}

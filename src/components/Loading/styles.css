@@ -9,8 +9,15 @@
   }
 }
 
+.container {
+  height: 100%;
+  width: 100%;
+}
+
 .loading {
   position: relative;
+  height: 100%;
+  width: 100%;
 }
 .loading div,
 .loading div:after {
@@ -35,6 +42,17 @@
   position: absolute;
   left: calc(50% - 100px);
   top: calc(50% - 100px);
-  transform: translate(-50%, -50%);
   transform: translate(-100px, -100px) scale(1) translate(100px, 100px);
+}
+
+.message.loading div {
+  animation: loading 1s linear infinite;
+  width: 30px;
+  height: 30px;
+}
+
+.message {
+  width: 30px !important;
+  height: 30px !important;
+  position: relative;
 }

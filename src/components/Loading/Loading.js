@@ -5,13 +5,13 @@ import styles from './styles.css';
 
 const Loading = (props) => {
   return (
-    <div>
-      <div styleName="loading">
+    <div styleName="container">
+      <div styleName={"loading " + (props.message ? "message" : "")}>
         <div></div>
       </div>
     </div>
   )
 }
 
-export default CSSModules(Loading, styles);
+export default CSSModules(Loading, styles, {allowMultiple: true});
  

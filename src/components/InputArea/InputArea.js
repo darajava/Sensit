@@ -37,6 +37,11 @@ const InputArea = (props) => {
     document.getElementById('message-box').focus();
   };
 
+  let showSensit = (e) => {
+    document.getElementById('message-box').focus();
+    props.showSensit(e);
+  }
+
   let sensitButton = props.sensit && <button styleName="send-select abs lock" onClick={(e) => sendMessage(e, true)} />;
 
   return (
@@ -53,7 +58,7 @@ const InputArea = (props) => {
       <div styleName="button-container">
         <button styleName="send-select">
           <span styleName="glyph-position">
-            <Glyphicon glyph="send" onClick={props.sensit ? sendMessage : props.showSensit} />
+            <Glyphicon glyph="send" onClick={props.sensit ? sendMessage : showSensit} />
           </span>
         </button>
         {sensitButton}
