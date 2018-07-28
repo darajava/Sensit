@@ -347,7 +347,6 @@ class Chat extends Component {
     .then( (response) => { 
       if (!response.ok) {
         success = false
-        alert('wrong pin');
         return;
       }
     

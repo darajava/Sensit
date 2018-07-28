@@ -4,6 +4,7 @@ import moment from 'moment'
 import CSSModules from 'react-css-modules';
 import styles from './styles.css';
 import Loading from '../Loading/Loading';
+import Toast from '../Toast/Toast';
 import Glyphicon from 'react-bootstrap/lib/Glyphicon'
 
 import { decode } from '../../utils/utils';
@@ -71,10 +72,15 @@ class Message extends React.Component {
     this.setState({
       spinner: true,
     })
-    this.props.requestSensitiveMessages((show) => {
+    this.props.requestSensitiveMessages((success) => {
       this.setState({
-        show,
+        show: success,
+        toast: null,
         spinner: false,
+      }, () => {
+        this.setState({
+          toast: success ? (<Toast message="Sensitive message decrypted" />) : (<Toast message="Incorrect PIN" />)
+        })
       })
     });
   }
@@ -140,6 +146,8 @@ class Message extends React.Component {
 
     return (
       <div styleName={`message-holder`} onClick={this.showMessage}>
+        {this.state.toast}
+
         <div styleName={props.mine ? ' my-message' : ' your-message'}>
           {spinner}
           {username}

@@ -13,6 +13,10 @@ class EnterPin extends React.Component {
     this.state = {
       pin: "",
     }
+
+    setTimeout(() => {
+      document.getElementById('pin-input').focus();
+    }, 0); 
   }
   
   stopPropagation(e) {
@@ -20,10 +24,14 @@ class EnterPin extends React.Component {
   }
 
   removeAttr() {
-    alert();
     document.getElementById('pin-input').removeAttribute('readonly');
   }
 
+  submit = (e) => {
+    if ((e && e.keyCode === 13) || typeof e === "undefined") {
+      this.props.onEnter(document.getElementById("pin-input").value);
+    }
+  }
 
   render() {
 
@@ -35,8 +43,8 @@ class EnterPin extends React.Component {
               Enter PIN
             </div>
           </div>
-          <input autocomplete="off" readonly onfocus={() => this.removeAttr()} type="password" id="pin-input" styleName="input" placeholder="••••"/>
-          <button styleName="submit" onClick={() => this.props.onEnter(document.getElementById("pin-input").value)}>Submit</button>
+          <input autoComplete="off" onKeyUp={this.submit} readOnly onFocus={() => this.removeAttr()} type="password" id="pin-input" styleName="input" placeholder="••••"/>
+          <button styleName="submit" onClick={() => this.submit()}>Submit</button>
         </div>
       </div>
     );

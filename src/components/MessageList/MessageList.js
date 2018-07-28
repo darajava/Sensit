@@ -6,6 +6,7 @@ import Message from '../Message/Message';
 import Glyphicon from 'react-bootstrap/lib/Glyphicon'
 import {isDelivered, isSeen, isLastSeen} from '../../messageUtils';
 import EnterPin from '../EnterPin/EnterPin';
+import Toast from '../Toast/Toast';
 class MessageList extends React.Component {
 
   constructor() {
@@ -59,7 +60,9 @@ class MessageList extends React.Component {
           }
           onEnter={
             (pin) => {
-              props.requestSensitiveMessages(pin, this.state.callback);
+              setTimeout(() => {
+                props.requestSensitiveMessages(pin, this.state.callback);
+              }, 500);
               this.setState({
                 askForPin: false,
               })
