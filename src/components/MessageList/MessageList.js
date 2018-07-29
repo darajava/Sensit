@@ -14,6 +14,7 @@ class MessageList extends React.Component {
 
     this.state = {
       askForPin: false,
+      showMessages: false,
     }
   }
 
@@ -32,14 +33,14 @@ class MessageList extends React.Component {
             mine={props.messages[i].sentBy === localStorage.getItem('id')}
             isDelivered={isDelivered(props.messages[i])}
             isSeen={isSeen(props.messages[i])}
+            show={this.state.showMessages}
             isLastSeen={isLastSeen(props.messages[i], props)}
             requestSensitiveMessages={(callback, cancel) => {
               this.setState({
                 askForPin: true,
                 callback,
                 cancel,
-              })
-              // props.requestSensitiveMessages(pin, callback)
+              });
             }}
           />
         );
@@ -52,7 +53,7 @@ class MessageList extends React.Component {
         <EnterPin
           onCancel={
             () => {
-              this.state.callback(false);
+              this.state.callback(false, true);
               this.setState({
                 askForPin: false,
               })
@@ -61,7 +62,20 @@ class MessageList extends React.Component {
           onEnter={
             (pin) => {
               setTimeout(() => {
-                props.requestSensitiveMessages(pin, this.state.callback);
+                props.requestSensitiveMessages(pin, (success) => {
+                  if (success) {
+                    this.setState({
+                      showMessages: true,
+                    });
+                    setTimeout(() => {
+                      this.setState({
+                        showMessages: false,
+                      });
+                      props.requestSensitiveMessages();
+                    }, 1000 * 10); 
+                  }
+                  this.state.callback(success)
+                });
               }, 500);
               this.setState({
                 askForPin: false,

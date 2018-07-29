@@ -1,6 +1,5 @@
 .container {
   text-align: center;
-
 }
 
 .toast {
@@ -35,7 +34,7 @@
 }
 
 .toast div {
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.4);
   padding: 8px 15px;
   border-radius: 15px;
 

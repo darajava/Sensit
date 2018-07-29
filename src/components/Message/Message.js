@@ -72,15 +72,22 @@ class Message extends React.Component {
     this.setState({
       spinner: true,
     })
-    this.props.requestSensitiveMessages((success) => {
+    this.props.requestSensitiveMessages((success, cancel) => {
       this.setState({
         show: success,
         toast: null,
         spinner: false,
       }, () => {
-        this.setState({
-          toast: success ? (<Toast message="Sensitive message decrypted" />) : (<Toast message="Incorrect PIN" />)
-        })
+        if (success) {
+          this.setState({
+            toast: <Toast message="Sensitive messages decrypted for 10 minutes" />,
+          });
+        } else if (!success && !cancel) {
+          this.setState({
+            toast: <Toast message="Incorrect PIN" />,
+          });
+        }
+
       })
     });
   }
@@ -140,20 +147,21 @@ class Message extends React.Component {
       );
     }
 
-    let sensitiveClass = !this.state.show && props.message.sensitive ? 'sensitive' : '';
+    let sensitiveBlur = !this.props.show && props.message.sensitive ? 'sensitive-blur' : '';
+    let sensitiveClass = props.message.sensitive ? 'sensitive' : '';
 
     let spinner = this.state.spinner ? <div styleName="loader-holder"> <Loading message={true}/></div> : null;
 
     return (
-      <div styleName={`message-holder`} onClick={this.showMessage}>
+      <div styleName={`message-holder`}>
         {this.state.toast}
 
-        <div styleName={props.mine ? ' my-message' : ' your-message'}>
+        <div styleName={sensitiveClass + (props.mine ? ' my-message' : ' your-message')} onClick={this.showMessage}>
           {spinner}
           {username}
-          <span styleName={'message-text' + bang + ' ' + sensitiveClass}>
+          <div styleName={'message-text ' + bang + ' ' + sensitiveBlur}>
             {decode(props.message.text)}
-          </span>
+          </div>
           <span styleName="info">
             <div styleName="time">
               {moment(props.message.createdAt).format('h:mm a')}
