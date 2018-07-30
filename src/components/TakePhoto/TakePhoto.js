@@ -58,18 +58,25 @@ class TakePhoto extends React.Component {
         // console.log(input);
         // this.postData(`/upload-image`, {files: [input]});
         var form = document.getElementById('photo-form');
-        var data = new FormData(form);
+        var data = new FormData();
         var req = new XMLHttpRequest();
+
+        let uploadedFile = document.getElementById('photo').files[0];
+        let extension = uploadedFile.name.split('.').pop();
+        let filename = Date.now() + localStorage.getItem('id') + '.' + extension;
+
+        data.append('filename', filename);
+        data.append('photo', uploadedFile);
         req.open("POST", "http://" + process.env.REACT_APP_API_URL + '/uploadimage', true);
         req.send(data);
-        this.ftw("http://" + process.env.REACT_APP_API_URL + "/images/frog.jpg");
+        this.ftw("http://" + process.env.REACT_APP_API_URL + "/images/" + filename);
       };
     }
   }
 
   ftw = (imgURI) => {
-
-    /*globals createNewFileEntry*/
+    // imgURI = "http://" + process.env.REACT_APP_API_URL + "/images/frog.jpg";
+      /*globals createNewFileEntry*/
 
       // window.resolveLocalFileSystemURL(imgURI, function success(fileEntry) {
 
