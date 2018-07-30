@@ -17,7 +17,7 @@
 }
 
 .main-input {
-  width: 100%;
+  width: calc(100% - 41px);
   height: 43px;
   padding: 7px;
   padding-left: 15px;
@@ -99,4 +99,14 @@
   left: -2px;
   top: 2px;
   font-size: 18px;
+}
+
+.right {
+  display: inline-block;
+  float: right;
+  color: #b1b1b1;
+  height: 43px;
+  padding: 9px;
+  font-size: 18px;
+  padding-right: 13px;
 }

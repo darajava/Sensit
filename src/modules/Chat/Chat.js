@@ -49,6 +49,7 @@ import React , { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import InputArea from '../../components/InputArea/InputArea';
+import TakePhoto from '../../components/TakePhoto/TakePhoto';
 import MessageList from '../../components/MessageList/MessageList';
 import Spreadsheet from '../../components/Spreadsheet/Spreadsheet';
 import { ConnectedRouter } from 'react-router-redux';
@@ -137,6 +138,7 @@ class Chat extends Component {
       let parsedMessage = '';
       try {
         parsedMessage = JSON.parse(message.data);
+
       } catch (e) {
         console.log('This doesn\'t look like valid JSON: ', message.data);
         return;
@@ -320,6 +322,44 @@ class Chat extends Component {
       this.pushMessages(messages);
 
       console.log('ddd', jsonMessage);
+
+      connection.send(JSON.stringify({
+        type: 'message',
+        data: jsonMessage,
+      }));
+  }
+
+  sendPhoto = (dataURI) => {
+      this.props.sendUpdate();
+
+      let jsonMessage = {
+        token: localStorage.getItem('token'),
+        text: ' ',
+        createdAt: Date.now(),
+        timestamp: Date.now(),
+        deliveredTo: [],
+        username: JSON.parse(localStorage.getItem('user')).username,
+        room: this.room,
+        sensitive: true,
+        forUsers: this.state.users,
+        sentBy: localStorage.getItem('id'),
+        fake: true, // This is when we fake the message on the frontend before delivery to the server
+        image: dataURI,
+      }
+      console.log('xxx', this.room);
+
+      this.messageSentSound.play();
+
+      let messages = this.state.messages;
+
+      messages.push(jsonMessage);
+
+      this.pushMessages(messages);
+
+      console.log('ddd', JSON.stringify({
+        type: 'message',
+        data: jsonMessage,
+      }));
 
       connection.send(JSON.stringify({
         type: 'message',
@@ -555,6 +595,7 @@ class Chat extends Component {
             showSensit={this.showSensit.bind(this)}
             hideSensit={this.hideSensit.bind(this)}
             sensit={this.state.sensit}
+            sendPhoto={this.sendPhoto}
           />
         </div>
       </div>

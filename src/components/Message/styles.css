@@ -40,6 +40,11 @@
   position: relative;
 }
 
+.message img {
+  max-width: 100%;
+  image-orientation: from-image;
+}
+
 .sensitive-blur {
   filter: blur(3px);
 }

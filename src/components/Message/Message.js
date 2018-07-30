@@ -152,6 +152,11 @@ class Message extends React.Component {
 
     let spinner = this.state.spinner ? <div styleName="loader-holder"> <Loading message={true}/></div> : null;
 
+    let messageContent = decode(props.message.text);
+    if (typeof props.message.image !== 'undefined') {
+      messageContent = <img src={props.message.image} />;
+    }
+
     return (
       <div styleName={`message-holder`}>
         {this.state.toast}
@@ -160,7 +165,7 @@ class Message extends React.Component {
           {spinner}
           {username}
           <div styleName={'message-text ' + bang + ' ' + sensitiveBlur}>
-            {decode(props.message.text)}
+            {messageContent}
           </div>
           <span styleName="info">
             <div styleName="time">

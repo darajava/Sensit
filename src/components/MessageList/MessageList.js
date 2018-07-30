@@ -34,6 +34,7 @@ class MessageList extends React.Component {
             isDelivered={isDelivered(props.messages[i])}
             isSeen={isSeen(props.messages[i])}
             show={this.state.showMessages}
+            image={props.messages[i].image}
             isLastSeen={isLastSeen(props.messages[i], props)}
             requestSensitiveMessages={(callback, cancel) => {
               this.setState({
