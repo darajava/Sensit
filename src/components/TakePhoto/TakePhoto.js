@@ -39,12 +39,12 @@ class TakePhoto extends React.Component {
     if (typeof Camera !== 'undefined') {
       let opts = {
           quality: 80,
-          destinationType: Camera.DestinationType.DATA_URL,
+          destinationType: Camera.DestinationType.FILE_URI,
           sourceType: Camera.PictureSourceType.CAMERA,
           mediaType: Camera.MediaType.PICTURE,
           encodingType: Camera.EncodingType.JPEG,
           cameraDirection: Camera.Direction.BACK,
-          correctOrientation: true,
+          correctOrientation: true, // Fixes orientation quirks
           targetWidth: 320,
           targetHeight: 400,
       };
@@ -53,46 +53,67 @@ class TakePhoto extends React.Component {
     } else {
       document.getElementById('photo').click();
       document.getElementById('photo').onchange = () => {
-
-        // let input = this.files[0];
-        // console.log(input);
-        // this.postData(`/upload-image`, {files: [input]});
-        var form = document.getElementById('photo-form');
-        var data = new FormData();
-        var req = new XMLHttpRequest();
-
-        let uploadedFile = document.getElementById('photo').files[0];
-        let extension = uploadedFile.name.split('.').pop();
-        let filename = Date.now() + localStorage.getItem('id') + '.' + extension;
-
-        data.append('filename', filename);
-        data.append('photo', uploadedFile);
-        req.open("POST", "http://" + process.env.REACT_APP_API_URL + '/uploadimage', true);
-        req.send(data);
-        this.ftw("http://" + process.env.REACT_APP_API_URL + "/images/" + filename);
+        this.uploadPhoto();
       };
     }
   }
 
-  ftw = (imgURI) => {
-    // imgURI = "http://" + process.env.REACT_APP_API_URL + "/images/frog.jpg";
-      /*globals createNewFileEntry*/
+  ftw = (imageURI) => {
 
-      // window.resolveLocalFileSystemURL(imgURI, function success(fileEntry) {
+    /*globals FileUploadOptions*/
+    /*globals FileTransfer*/
 
-      //     // Do something with the FileEntry object, like write to it, upload it, etc.
-      //     // writeFile(fileEntry, imgUri);
-      //     console.log("got file: " + fileEntry.fullPath);
-      //     // displayFileData(fileEntry.nativeURL, "Native URL");
+    var options = new FileUploadOptions();
 
-      // }, function () {
-      //   // If don't get the FileEntry (which may happen when testing
-      //   // on some emulators), copy to a new FileEntry.
-      //     createNewFileEntry(imgURI);
-      // });
-      // // uncomment this for desktop debugging
-      // // imgURI = 'R0lGODlhCgAKAKEDANwrGdwsGt0vHv///yH+IkNyZWF0ZWQgYnkgQ2FmZXppbmhvIHdpdGggVGhlIEdJTVAAIfkEAQoAAwAsAAAAAAoACgAAAhKcjweJsDyCg3ImBwTD0G4IDgUAOw==';
-      this.props.sendPhoto(imgURI);            
+    options.fileKey     = "photo";
+    options.fileName    = imageURI.substr(imageURI.lastIndexOf("/")+1);
+    options.mimeType    = "image/jpeg";
+    options.httpMethod  = "POST";
+    options.chunkedMode = false;
+
+    let extension = options.fileName.split('.').pop();
+    let filename = Date.now() + '-' + localStorage.getItem('id') + '.' + extension;
+
+    options.params = {
+      filename,
+    };
+
+    var fileTransfer = new FileTransfer();
+
+    fileTransfer.upload(imageURI, ("http://" + process.env.REACT_APP_API_URL + "/uploadimage"), uploadComplete, uploadError, options);
+
+    let uploadComplete = (result) => {
+      console.log("Code = " + result.responseCode);
+      console.log("Response = " + result.response);
+      console.log("Sent = " + result.bytesSent);
+    }
+
+    let uploadError = (error) => {
+      console.log("upload error source " + error.source);
+      console.log("upload error target " + error.target);
+    }
+    
+    this.props.sendPhoto("http://" + process.env.REACT_APP_API_URL + "/images/" + filename);
+  }
+
+  uploadPhoto = () => {
+    // let input = this.files[0];
+    // console.log(input);
+    // this.postData(`/upload-image`, {files: [input]});
+    var form = document.getElementById('photo-form');
+    var data = new FormData();
+    var req = new XMLHttpRequest();
+
+    let uploadedFile = document.getElementById('photo').files[0];
+    let extension = uploadedFile.name.split('.').pop();
+    let filename = Date.now() + '-' + localStorage.getItem('id') + '.' + extension;
+
+    data.append('filename', filename);
+    data.append('photo', uploadedFile);
+    req.open("POST", "http://" + process.env.REACT_APP_API_URL + '/uploadimage', true);
+    req.send(data);
+    
+    this.props.sendPhoto("http://" + process.env.REACT_APP_API_URL + "/images/" + filename);
   }
 
   render() {
