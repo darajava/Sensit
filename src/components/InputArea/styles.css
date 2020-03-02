@@ -28,6 +28,7 @@
   display: inline-block;
   line-height: 29px;
   color: #333;
+  border: 0;
 }
 
 .send-select {

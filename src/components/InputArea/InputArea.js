@@ -11,8 +11,9 @@ import ReactDOMServer from 'react-dom/server';
 const InputArea = (props) => {
 
   let sendMessage = (e, sensitive) => {
+    console.log(e.which);
 
-    if (e.which === 13 || typeof e.which === 'undefined') {
+    if (e.which === 13 || typeof e.keyCode === 'undefined') {
       e.preventDefault();
 
       if (!props.sensit) {
@@ -20,8 +21,9 @@ const InputArea = (props) => {
 
         return;
       }
-      props.sendMessage(document.getElementById('message-box').innerHTML, !!sensitive);
-      document.getElementById('message-box').innerHTML = '';
+
+      props.sendMessage(document.getElementById('message-box').innerText, !!sensitive);
+      document.getElementById('message-box').innerText = '';
       props.typing(false);
 
       props.hideSensit();
@@ -30,8 +32,18 @@ const InputArea = (props) => {
     document.getElementById('message-box').focus();
   };
 
-  let sendTyping = () => {
-    props.typing(true);
+  let sendTyping = (e) => {
+    const keycode = e.which;
+    const valid = 
+      (keycode > 47 && keycode < 58)   || // number keys
+      keycode == 32 || // spacebar
+      (keycode > 64 && keycode < 91)   || // letter keys
+      (keycode > 95 && keycode < 112)  || // numpad keys
+      (keycode > 185 && keycode < 193) || // ;=,-./` (in order)
+      (keycode > 218 && keycode < 223);   // [\]' (in order)
+
+    if (valid) 
+      props.typing(true);
   }
 
   let showSensit = (e) => {
@@ -45,15 +57,16 @@ const InputArea = (props) => {
     <div styleName="bottom" id="seen">
 
       <div styleName="input-holder">
-        <span
+        <div
           id="message-box"
           styleName="main-input"
           placeholder="Type your message..."
           onKeyDown={sendMessage}
           onKeyUp={sendTyping}
-          contentEditable="true">
+          contentEditable
+        >
 
-        </span>
+        </div>
         <div styleName="right">
           <TakePhoto sendPhoto={props.sendPhoto}/>
         </div>

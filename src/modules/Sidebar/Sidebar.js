@@ -110,7 +110,7 @@ class Sidebar extends Component {
       }
 
       console.log(user);
-      chats[i] =
+      chats[i] = (
         <div key={i}>
           <ChatItem 
             selectChat={this.props.selectChat}
@@ -119,7 +119,8 @@ class Sidebar extends Component {
             user={user}
             room={this.props.chats[i]}
           />
-        </div>;
+        </div>
+      );
     }
 
     let users = [];
@@ -144,7 +145,18 @@ class Sidebar extends Component {
     return (
       <div styleName="container">
         <HomeHeader />
-            {(this.props.chatsLoaded && this.props.usersLoaded) ? <div styleName="chat-group">{chats}</div> : <Loading />}
+          <Tabs inkBarStyle={{ backgroundColor: '#fff'}} tabItemContainerStyle={{ height:44 }} onChange={this.handleTabChange}>
+            <Tab value={1} style={ this.getStyle(this.state.activeIndex === 1) } label="Chats" >
+              {chats}
+            </Tab>
+            <Tab value={2} style={ this.getStyle(this.state.activeIndex === 2) } label="Contacts" >
+              {this.props.usersLoaded ? <div styleName="chat-group">{users}</div> : <div />}
+            </Tab>
+            <Tab value={3} style={ this.getStyle(this.state.activeIndex === 3) } label="Groups" >
+              {this.props.usersLoaded && <NewGroup users={this.props.users} />}
+              {(this.props.usersLoaded && this.props.roomsLoaded) ? <div styleName="chat-group">{rooms}</div> : <div />}
+            </Tab>
+          </Tabs>
       </div>
     );
   }
@@ -153,17 +165,7 @@ class Sidebar extends Component {
 
             // {this.props.usersLoaded ? <div styleName="chat-group">{users}</div> : <Loading />}
 
-        /*<Tabs inkBarStyle={{ backgroundColor: '#fff'}} tabItemContainerStyle={{ height:44 }} onChange={this.handleTabChange}>
-          <Tab value={1} style={ this.getStyle(this.state.activeIndex === 1) } label="Chats" >
-          </Tab>
-          <Tab value={2} style={ this.getStyle(this.state.activeIndex === 2) } label="Contacts" >
-            {this.props.usersLoaded ? <div styleName="chat-group">{users}</div> : <Loading />}
-          </Tab>
-          <Tab value={3} style={ this.getStyle(this.state.activeIndex === 3) } label="Groups" >
-            {this.props.usersLoaded && <NewGroup users={this.props.users} />}
-            {(this.props.usersLoaded && this.props.roomsLoaded) ? <div styleName="chat-group">{rooms}</div> : <Loading />}
-          </Tab>
-        </Tabs>*/
+        /**/
 
 export default CSSModules(Sidebar, styles);
 

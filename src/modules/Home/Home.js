@@ -18,6 +18,7 @@ class Home extends Component {
 
   constructor() {
     super();
+
     this.state = {
       chat: false,
       chats: [],
@@ -28,7 +29,6 @@ class Home extends Component {
       roomsLoaded: false,
       activeIndex: 1,
     }
-
 
     this.getRecent = this.getRecent.bind(this);
     // this.checkForNewMessages = this.checkForNewMessages.bind(this);

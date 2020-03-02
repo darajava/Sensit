@@ -35,7 +35,8 @@ const ChatItem = (props) => {
 
     clickHandler = () => props.selectChat(props.room._id, props.room.users, undefined, props.room);
 
-    imageUrl = props.room.image ? props.room.image : 'https://picsum.photos/' + stringToIntHash(props.room._id);
+    const imageHash = stringToIntHash(props.room._id);
+    imageUrl = props.room.image ? props.room.image : `https://i.picsum.photos/id/${imageHash}/100/100.jpg`;
     roomName = props.room.name;
   } else {
     clickHandler = () => {
@@ -45,9 +46,11 @@ const ChatItem = (props) => {
         props.user
       );
     }
+
+    const imageHash = stringToIntHash(props.user._id);
     imageUrl = props.user.image
       ? props.user.image
-      : 'https://picsum.photos/' + stringToIntHash(props.user._id);
+      : `https://i.picsum.photos/id/${imageHash}/100/100.jpg`;
       roomName = props.user.username;
   }
 

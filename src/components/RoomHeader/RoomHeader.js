@@ -32,7 +32,7 @@ const RoomHeader = (props) => {
     }
 
     onlineLight = <span styleName={isOnline ? 'online-light' : 'offline-light'}/>;
-    image = props.user.image ? props.user.image : 'https://picsum.photos/' + stringToIntHash(props.user._id);
+    image = props.user.image ? props.user.image : `https://i.picsum.photos/id/${stringToIntHash(props.user._id)}/100/100.jpg`;
   } else {
     if (props.typing) {
       if (props.currentlyTyping.length === 1) {
@@ -41,7 +41,7 @@ const RoomHeader = (props) => {
         dateString = 'Several people are typing';
       }
     }
-    image = props.room.image ? props.room.image : 'https://picsum.photos/' + stringToIntHash(props.room._id);
+    image = props.room.image ? props.room.image : `https://i.picsum.photos/id/${stringToIntHash(props.room._id)}/100/100.jpg`;
   }
 
 

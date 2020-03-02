@@ -52,17 +52,16 @@
 }
 
 .options {
+  display: flex;
   float: right;
-  line-height: 53px;
-  width: 33px;
-  position: relative;
-  top: -10px;
-  right: -10px;
-  padding-left: 10px;
-  padding-right: 10px;
-  width: 43px;
+  line-height: 53px; 
   text-align: center;
   color: #7b7d7d;
+  height: 100%;
+  align-items: center;
+  text-align: center;
+  color: #7b7d7d;
+
 }
 
 .online-light {
